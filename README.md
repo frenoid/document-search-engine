@@ -16,6 +16,34 @@ For more info, see https://docs.google.com/document/d/1iPhPTKiz3b44uG7y99aJp4WtU
 
 ![Architecture diagram](https://github.com/frenoid/document-search-engine/blob/master/architecture.png?raw=true)
 
+## Our Platform
+
+### Seed
+Need for documentation readers to find documents relevant to them. In return documentation writers find their intended audience and get feedback on how to write better documentation
+
+### Magnet
+For the publishers: modular integration with multiple document sources. Wherever you write,  you can integrate with our system (GDocs, GDrive, OnDrive, Dropbox).
+For the publishers: get the documentation seen by the right people if they connect to our system.
+For the consumers: always find the documentation you really want.
+For the consumers: search engine improves results the more you use it.
+For the consumers: search results are continuously improved with the internally developed feedback loop to collect and learn from users’ search history and feedback.
+
+### Producers
+Documentation writers
+
+
+### Consumers
+Documentation readers
+We propose a platform to enable the following use cases
+Teams can publish documentation to a Cloud Storage
+The platform can index the text in the Cloud Storage
+The platform can make these documents easily searchable
+Teams needing the documentation can easily find the documents they want on the platform
+Document consumers can give feedback on the documentation and rank the documentation by usefulness
+The platform will improve the search algorithm to give better results based on user feedback
+The platform will record user views and behaviour on the platform and use machine learning to recommend other useful documents to each user
+
+
 ## To Run
 
 TBC
