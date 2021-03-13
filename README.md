@@ -12,9 +12,9 @@ We propose building a search engine for the company’s documentation that learn
 
 For more info, see https://docs.google.com/document/d/1iPhPTKiz3b44uG7y99aJp4WtUJptwGFWjQ8SRrf9LaE/edit
 
-## Architecutre
+## Architecture
 
-TBC
+![Architecture diagram](https://github.com/frenoid/document-search-engine/blob/master/architecture.png?raw=true)
 
 ## To Run
 
