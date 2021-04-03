@@ -1,0 +1,14 @@
+{
+  "MONGODB": {
+      "HOST": "localhost",
+      "USERNAME": "username",
+      "PASSWORD": "password",
+      "DB": "db",
+      "COLLECTION": "collection"
+  },
+  "ES": {
+    "HOST": "localhost",
+    "USERNAME": "username",
+    "PASSWORD": "password"
+  }
+}
