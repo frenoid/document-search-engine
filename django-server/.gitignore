@@ -1,7 +1,0 @@
-__pycache__
-.venv
-.vscode
-.DS_Store
-*.sock
-media
-static
