@@ -1,1 +1,12 @@
+
+# General
+.DS_Store
+
+# Editor directories and files
+*.vscode
 .idea
+.vscode
+
+# Config
+*config.json
+
