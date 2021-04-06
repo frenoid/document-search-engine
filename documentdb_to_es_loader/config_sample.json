@@ -1,5 +1,5 @@
 {
-  "MONGODB": {
+  "MONGO": {
       "HOST": "localhost",
       "USERNAME": "username",
       "PASSWORD": "password",
@@ -9,6 +9,7 @@
   "ES": {
     "HOST": "localhost",
     "USERNAME": "username",
-    "PASSWORD": "password"
+    "PASSWORD": "password",
+    "INDEX": "index"
   }
 }
