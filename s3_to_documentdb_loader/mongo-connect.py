@@ -1,13 +1,18 @@
 import pymongo
 import pandas as pd
+import boto3
 
 from boto.s3.connection import S3Connection
+from sys import argv, exit
+
+# Prepare the SSM client
+ssm = boto3.client('ssm')
 
 # Secrets
-MONGO_HOST="18.138.121.7"
-MONGO_USER="elasticsearch"
-MONGO_PASSWORD="elasticsearch"
-MONGO_AUTH_SOURCE="elasticsearch"
+MONGO_HOST=ssm.get_parameter(Name="/prod/mongodb/host", WithDecryption=True)['Parameter']['Value']
+MONGO_USER=ssm.get_parameter(Name="/prod/mongodb/username", WithDecryption=True)['Parameter']['Value']
+MONGO_PASSWORD=ssm.get_parameter(Name="/prod/mongodb/password", WithDecryption=True)['Parameter']['Value']
+MONGO_AUTH_SOURCE=ssm.get_parameter(Name="/prod/mongodb/auth_source", WithDecryption=True)['Parameter']['Value']
 
 # Chunk size to read the
 CHUNK_SIZE=10000
@@ -33,10 +38,16 @@ def load_documents_into_mongo(docu_search_database) -> None:
 
 
 if __name__ == "__main__":
-	client = get_mongo_client() 
-	db = client["docu_search"]
-	collection = db.test_collection.find()
-	print(collection[0])
+	if argv[1] == "test":
+		print("Test get params")
+		print(MONGO_HOST, MONGO_USER, MONGO_PASSWORD, MONGO_AUTH_SOURCE)
+		exit(0)
+	else:
+		client = get_mongo_client()
+		db = client["docu_search"]
+		collection = db.test_collection.find()
+		print(collection[0])
 
-	load_documents_into_mongo(docu_search_database=db)
+		load_documents_into_mongo(docu_search_database=db)
+		exit(0)
 
