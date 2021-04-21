@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
+FILE_DIR = "./files"
 
 def connect(credential_file):
     creds = None
@@ -40,8 +41,9 @@ def get_new_files(service):
     items = results.get('files', [])
     if not items:
         print('No files found.')
-    else:
+    else: 
         res = []
+        # Get the new files for the last 24 hours
         last24HourDateTime = datetime.now() - timedelta(hours = 24)
         for item in items:
             if datetime.strptime(item['createdTime'], '%Y-%m-%dT%H:%M:%S.%fZ') > last24HourDateTime:
@@ -49,9 +51,9 @@ def get_new_files(service):
         return res
 
 
-def download(service, file_name, file_id, file_mimeType):
+def download(service, file_name, file_id, file_mimeType, file_base_dir):
     request = service.files().get_media(fileId=file_id)
-    fh = io.FileIO('{}'.format(file_name), mode='wb')
+    fh = io.FileIO(os.path.join(file_base_dir, '{}'.format(file_name)), mode='wb')
     downloader = MediaIoBaseDownload(fh, request)
     done = False
     while done is False:
@@ -61,14 +63,16 @@ def download(service, file_name, file_id, file_mimeType):
             print("Download %d%%. " % int(status.progress()*100))
     print("Download Complete!")
 
-def download_new_files(service, new_files):
+def download_new_files(service, new_files, file_base_dir):
+    if not os.path.isdir(file_base_dir):
+        os.makedirs(file_base_dir)
     if new_files:
         for new_file in new_files:
-            download(service, new_file['name'], new_file['id'], new_file['mimeType'])
+            download(service, new_file['name'], new_file['id'], new_file['mimeType'], file_base_dir)
     else:
         print('No new files created for the past day')
 
 if __name__ == '__main__':
     service = connect('credential_test.json')
     new_files = get_new_files(service)
-    download_new_files(service, new_files)
+    download_new_files(service, new_files, FILE_DIR)
