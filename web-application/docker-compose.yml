@@ -18,7 +18,7 @@ services: # the different images that will be running as containers
     command: sh -c "
       python manage.py makemigrations &&
       python manage.py migrate &&
-      gunicorn wsgi:application --bind 0.0.0.0:${APP_PORT}" # Django commands to run app using gunicorn
+      gunicorn prod_wsgi:application --bind 0.0.0.0:${APP_PORT}" # Django commands to run app using gunicorn
     ports:
       - "8000:8000"
     volumes:
