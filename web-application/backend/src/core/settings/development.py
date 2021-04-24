@@ -17,12 +17,12 @@ WSGI_APPLICATION = 'src.core.wsgi.development.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'document_search',
-        'USER': 'document_search_user',
-        'PASSWORD': 'password',
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': 5432
+        'ENGINE': os.environ.get('ENGINE', 'db.backends.postgresql'),
+        'NAME': os.environ.get('DB_NAME', 'document_search'),
+        'USER': os.environ.get('POSTGRES_USER', 'document_search_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password1'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -32,7 +32,6 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
-
 # Django rest all auth account configuration
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'

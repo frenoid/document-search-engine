@@ -4,11 +4,11 @@ from .base import *  # noqa: F403
 SECRET_KEY = 'd6u*wn$6wj6x$4--!hvw1t5(xv(*1*=))3fd71@q^-p4$09f+0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 DEV = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 WSGI_APPLICATION = 'src.core.wsgi.production.application'
 
@@ -18,12 +18,12 @@ WSGI_APPLICATION = 'src.core.wsgi.production.application'
 # change to rds
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'document_search',
-        'USER': 'document_search_user',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
-        'PORT': 5432
+        'ENGINE': os.environ.get('ENGINE', 'db.backends.postgresql'),
+        'NAME': os.environ.get('DB_NAME', 'document_search'),
+        'USER': os.environ.get('POSTGRES_USER', 'document_search_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password1'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
