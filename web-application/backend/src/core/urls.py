@@ -21,6 +21,7 @@ from django.views.defaults import page_not_found
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from django.conf.urls.static import static
 from django.conf import settings
+from . import views
 
 
 urlpatterns = [
@@ -34,6 +35,7 @@ urlpatterns = [
         'Page not Found')}),
     url(r'^api/v1/', page_not_found, kwargs={'exception': Exception(
         'Page not Found')}),
+    url(r'^health-check', views.health_check, name="health_check")
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
