@@ -10,19 +10,18 @@ DEV = False
 
 ALLOWED_HOSTS = ['*']
 
-WSGI_APPLICATION = 'src.core.wsgi.production.application'
-
+WSGI_APPLICATION = 'prod_wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 # change to rds
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('ENGINE', 'db.backends.postgresql'),
+        'ENGINE': os.environ.get('ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('DB_NAME', 'document_search'),
         'USER': os.environ.get('POSTGRES_USER', 'document_search_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password1'),
-        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }

@@ -26,12 +26,13 @@ from django.conf import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/auth/', include('rest_auth.urls')),
-    url(r'^api/v1/auth/register/',
-        include('rest_auth.registration.urls')),
+    url(r'^api/v1/auth/register/', include('rest_auth.registration.urls')),
     url(r'^api/v1/auth/token/', obtain_jwt_token),
     url(r'^api/v1/auth/token-refresh/', refresh_jwt_token),
     url(r'^api/v1/', include('src.apps.search.urls')),
     url(r'^$', page_not_found, kwargs={'exception': Exception(
+        'Page not Found')}),
+    url(r'^api/v1/', page_not_found, kwargs={'exception': Exception(
         'Page not Found')}),
 ]
 urlpatterns += static(
