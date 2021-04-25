@@ -1,17 +1,26 @@
 from __future__ import print_function
-import os.path
+import os
+from os import path
+import io
+import json
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.http import MediaIoBaseDownload
-import io
-import json
-from datetime import datetime, timedelta
 
-SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-FILE_DIR = "./files"
+
+GCP_SCOPES = os.environ.get('GCP_SCOPES')
+GCP_CREDENTIAL = os.environ.get('GCP_CREDENTIAL')
+NEW_FILES_DIR = os.environ.get('NEW_FILE_DIR')
+PORT = os.environ.get('PORT')
+
+def init():
+    service = connect(GCP_CREDENTIAL)
+    new_files = get_new_files(service)
+    download_new_files(service, new_files, NEW_FILES_DIR)
 
 def connect(credential_file):
     creds = None
@@ -19,15 +28,15 @@ def connect(credential_file):
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        creds = Credentials.from_authorized_user_file('token.json', GCP_SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                credential_file, SCOPES)
-            creds = flow.run_local_server(port=8080)
+                credential_file, GCP_SCOPES)
+            creds = flow.run_local_server(port=PORT)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
@@ -36,6 +45,7 @@ def connect(credential_file):
     return service
 
 def get_new_files(service):
+    # Get the new files for the last 24 hours
     results = service.files().list(
         pageSize=10, fields="nextPageToken, files(id, name, mimeType, createdTime)").execute()
     items = results.get('files', [])
@@ -43,7 +53,6 @@ def get_new_files(service):
         print('No files found.')
     else: 
         res = []
-        # Get the new files for the last 24 hours
         last24HourDateTime = datetime.now() - timedelta(hours = 24)
         for item in items:
             if datetime.strptime(item['createdTime'], '%Y-%m-%dT%H:%M:%S.%fZ') > last24HourDateTime:
@@ -64,8 +73,6 @@ def download(service, file_name, file_id, file_mimeType, file_base_dir):
     print("Download Complete!")
 
 def download_new_files(service, new_files, file_base_dir):
-    if not os.path.isdir(file_base_dir):
-        os.makedirs(file_base_dir)
     if new_files:
         for new_file in new_files:
             download(service, new_file['name'], new_file['id'], new_file['mimeType'], file_base_dir)
@@ -73,6 +80,5 @@ def download_new_files(service, new_files, file_base_dir):
         print('No new files created for the past day')
 
 if __name__ == '__main__':
-    service = connect('credential_test.json')
-    new_files = get_new_files(service)
-    download_new_files(service, new_files, FILE_DIR)
+    init()
+    
