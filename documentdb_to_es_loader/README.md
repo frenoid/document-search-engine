@@ -5,7 +5,7 @@ Script to load documents from MongoDB to Elasticsearch.
 #### Setup
 
 ```
-$ mkvirtualenv -p python3 document-search-engine
+$ mkvirtualenv -p python3 es_loader
 $ pip3 install -r requirements-dev.txt -r requirements.txt
 ```
 #### Configuration
