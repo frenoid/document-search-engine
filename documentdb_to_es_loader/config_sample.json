@@ -10,6 +10,7 @@
     "HOST": "localhost",
     "USERNAME": "username",
     "PASSWORD": "password",
-    "INDEX": "index"
+    "INDEX_PREFIX": "index-prefix-",
+    "PRODUCTION_ALIAS": "index-production"
   }
 }

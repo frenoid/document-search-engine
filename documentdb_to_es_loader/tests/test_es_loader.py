@@ -1,14 +1,18 @@
 import unittest
 
 from bson import ObjectId
-from documentdb_to_es_loader.es_loader import build_es_actions, handle_nan_value
+from documentdb_to_es_loader.es_loader import (
+    build_es_actions,
+    handle_nan_value,
+    get_production_indices,
+)
 
 
 class TestEsLoader(unittest.TestCase):
     def test_build_es_actions(self):
 
         # GIVEN
-        config = {"ES": {"INDEX": "index"}}
+        next_index = "index"
         mongo_documents = [
             {
                 "_id": ObjectId("0123456789ab0123456789ab"),
@@ -33,7 +37,7 @@ class TestEsLoader(unittest.TestCase):
         ]
 
         # WHEN
-        es_actions = build_es_actions(mongo_documents, config)
+        es_actions = build_es_actions(mongo_documents, next_index)
 
         # THEN
         expected_actions = [
@@ -94,6 +98,26 @@ class TestEsLoader(unittest.TestCase):
         empty_string = ""
         self.assertEqual(content_with_valid_string_response, content_with_valid_string)
         self.assertEqual(content_with_nan_value_response, empty_string)
+
+    def test_get_production_indices(self):
+
+        # GIVEN
+        list_of_indices = [
+            "prefix-01",
+            "no-prefix-01",
+            "prefix-02",
+            "some random string",
+        ]
+        production_index_prefix = "prefix-"
+
+        # WHEN
+        production_indices = get_production_indices(
+            list_of_indices, production_index_prefix
+        )
+
+        # THEN
+        expected_production_indices = ["prefix-01", "prefix-02"]
+        self.assertEqual(production_indices, expected_production_indices)
 
 
 if __name__ == "__main__":
