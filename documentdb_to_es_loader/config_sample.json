@@ -11,6 +11,6 @@
     "USERNAME": "username",
     "PASSWORD": "password",
     "INDEX_PREFIX": "index-prefix-",
-    "PRODUCTION_ALIAS": "index-production"
+    "PRODUCTION_ALIAS": "production-alias"
   }
 }

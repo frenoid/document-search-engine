@@ -25,7 +25,8 @@ Create a `config.json` file with the following contents. A `config_sample.json` 
     "HOST": "localhost",
     "USERNAME": "username",
     "PASSWORD": "password",
-    "INDEX": "index"
+    "INDEX_PREFIX": "index-prefix-",
+    "PRODUCTION_ALIAS": "production-alias"
   }
 }
 ```
