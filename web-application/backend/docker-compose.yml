@@ -1,0 +1,34 @@
+version: '3.7'
+
+services: # the different images that will be running as containers
+  web: # service name
+    build: .
+    command: sh -c "python manage.py makemigrations &&
+      python manage.py migrate &&
+      gunicorn wsgi:application --bind 0.0.0.0:${APP_PORT}" # Django commands to run app using gunicorn
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/document_search # map data and files from parent directory in host to document_search directory in docker container
+      - static_volume:/home/app/webapp/document_search/static
+    env_file:
+      - .env # name of the env file
+    image: document_search # name of the image
+
+    expose: # expose the port to other services defined here so that they can access this service via the exposed port. In the case of Django, this is 8000 by default
+      - ${APP_PORT} # retrieved from the .env file
+    restart: "on-failure"
+    depends_on: # cannot start if db service is not up and running
+      - db
+  db: # service name
+    image: postgres
+    ports:
+    - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: "on-failure"
+
+volumes:
+  static_volume:
