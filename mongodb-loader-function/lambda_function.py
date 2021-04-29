@@ -15,9 +15,6 @@ s3 = boto3.client('s3')
 # Systems Manager
 ssm = boto3.client('ssm')
 
-# Chunk size - read the csv in chunks
-CHUNK_SIZE=10000
-
 # Secrets
 MONGO_HOST=ssm.get_parameter(Name="/prod/mongodb/host", WithDecryption=True)['Parameter']['Value']
 MONGO_USER=ssm.get_parameter(Name="/prod/mongodb/username", WithDecryption=True)['Parameter']['Value']
