@@ -1,19 +1,21 @@
-from elasticsearch import Elasticsearch
-
-config = {
-    "ES": {
-        "HOST": "localhost",
-        "USERNAME": "username",
-        "PASSWORD": "password",
-        "PRODUCTION_ALIAS": "production-alias",
-    }
-}
+import os
+from typing import Dict
+from dotenv import load_dotenv, find_dotenv
+from elasticsearch import Elasticsearch, ConnectionError
 
 
-def get_es_client(config: dict) -> Elasticsearch:
-    host = config["ES"]["HOST"]
-    username = config["ES"]["USERNAME"]
-    password = config["ES"]["PASSWORD"]
+load_dotenv(find_dotenv())
+
+ES_HOST = os.environ.get("ES_HOST")
+ES_USERNAME = os.environ.get("ES_USERNAME")
+ES_PASSWORD = os.environ.get("ES_PASSWORD")
+ES_PRODUCTION_ALIAS = os.environ.get("ES_PRODUCTION_ALIAS")
+
+
+def get_es_client() -> Elasticsearch:
+    host = ES_HOST
+    username = ES_USERNAME
+    password = ES_PASSWORD
     elastic_client = Elasticsearch(
         host,
         http_auth=(username, password),
@@ -32,10 +34,10 @@ def get_es_client(config: dict) -> Elasticsearch:
         print("Error! Failed to connect to Elasticsearch.")
 
 
-def search_documents(search_string: str) -> list:
-    client = get_es_client(config)
+def search_documents(search_string: str) -> Dict:
+    client = get_es_client()
 
-    index = config["ES"]["PRODUCTION_ALIAS"]
+    index = ES_PRODUCTION_ALIAS
     body = {
         "query": {
             "query_string": {
@@ -48,20 +50,19 @@ def search_documents(search_string: str) -> list:
     try:
         response = client.search(index=index, body=body, size=10)
         print("Success! Got search results.")
-    except:
-        print("Error!")
+    except Exception as e:
+        print(f"Error! {e}")
+        return e
 
     topic_list = []
     hits = response["hits"]["hits"]
-    
+
     for hit in hits:
         topic = hit["_source"]["doc"]["topic"]
-        topic_list.append(topic)
-    
-    return topic_list
+        id = hit["_id"]
+        hit_object = {"topic": topic, "id": id}
+        topic_list.append(hit_object)
 
+    response_object = {"response": topic_list}
 
-if __name__ == "__main__":
-    search_string = "Hong Kong"
-    results = search_documents(search_string)
-    print(results)
+    return response_object
