@@ -1,4 +1,8 @@
 from django.conf.urls import url
 from django.urls import path, include
 
-urlpatterns = []
+from . import views
+
+urlpatterns = [
+    path("search", views.search, name="search"),
+]

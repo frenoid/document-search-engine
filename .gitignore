@@ -10,3 +10,7 @@
 # Config
 *config.json
 
+# Python
+*.py[co]
+.pytest_cache
+__pycache__
