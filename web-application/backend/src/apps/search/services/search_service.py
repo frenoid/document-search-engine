@@ -25,17 +25,27 @@ def get_es_client() -> Elasticsearch:
         max_retries=100,
         retry_on_timeout=True,
     )
-    try:
-        # test connection to elasticsearch client
-        elastic_client.nodes.info()
-        print("Success! Connected to Elasticsearch.")
-        return elastic_client
-    except ConnectionError:
-        print("Error! Failed to connect to Elasticsearch.")
+    return elastic_client
+
+
+def build_response_object(es_response: Dict) -> Dict:
+    topic_list = []
+    hits = es_response["hits"]["hits"]
+
+    for hit in hits:
+        topic = hit["_source"]["doc"]["topic"]
+        id = hit["_id"]
+        score = hit["_score"]
+        hit_object = {"id": id, "topic": topic, "score": score}
+        topic_list.append(hit_object)
+
+    response_object = {"response": topic_list}
+
+    return response_object
 
 
 def search_documents(search_string: str) -> Dict:
-    client = get_es_client()
+    es_client = get_es_client()
 
     index = ES_PRODUCTION_ALIAS
     body = {
@@ -48,21 +58,12 @@ def search_documents(search_string: str) -> Dict:
     }
 
     try:
-        response = client.search(index=index, body=body, size=10)
+        es_response = es_client.search(index=index, body=body, size=10)
         print("Success! Got search results.")
     except Exception as e:
-        print(f"Error! {e}")
+        print(f"Elasticsearch Error! {e}")
         return e
 
-    topic_list = []
-    hits = response["hits"]["hits"]
-
-    for hit in hits:
-        topic = hit["_source"]["doc"]["topic"]
-        id = hit["_id"]
-        hit_object = {"topic": topic, "id": id}
-        topic_list.append(hit_object)
-
-    response_object = {"response": topic_list}
+    response_object = build_response_object(es_response)
 
     return response_object
