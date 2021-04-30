@@ -11,17 +11,18 @@ export const userService = {
 }
 
 const config = {
-    apiUrl: '',
+    apiUrl: 'http://0.0.0.0:8000/api/v1/',
 }
 
-function login (username, password) {
+function login (email, password) {
+    console.log(email, password)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
     }
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+    return fetch(`${config.apiUrl}auth/login/`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -29,7 +30,6 @@ function login (username, password) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user))
             }
-
             return user
         })
 }

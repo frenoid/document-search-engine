@@ -1,91 +1,111 @@
-<v-container
-    id="login"
-    fluid
-    tag="section"
-  >
 <template>
-  <div>
-    <h2>Login</h2>
-    <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          v-model="username"
-          type="text"
-          name="username"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && !username }"
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="3" />
+      <v-col
+        cols="6"
+      >
+        <v-container
+          style="position: relative;top: 13%;"
+          class="text-center"
         >
-        <div
-          v-show="submitted && !username"
-          class="invalid-feedback"
-        >
-          Username is required
-        </div>
-      </div>
-      <div class="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          v-model="password"
-          type="password"
-          name="password"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && !password }"
-        >
-        <div
-          v-show="submitted && !password"
-          class="invalid-feedback"
-        >
-          Password is required
-        </div>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-primary"
-          :disabled="status.loggingIn"
-        >
-          Login
-        </button>
-        <img
-          v-show="status.loggingIn"
-          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-        >
-        <router-link
-          to="/register"
-          class="btn btn-link"
-        >
-          Register
-        </router-link>
-      </div>
-    </form>
-  </div>
+          <v-card flat>
+            <v-card-title
+              primary-title
+            >
+              <h4>
+                Login
+              </h4>
+            </v-card-title>
+            <form>
+              <v-text-field
+                v-model="email"
+                :error-messages="emailErrors"
+                required
+                name="email"
+                label="Email"
+                @input="$v.email.$touch()"
+                @blur="$v.email.$touch()"
+              />
+              <v-text-field
+                v-model="password"
+                :error-messages="passwordErrors"
+                required
+                name="password"
+                label="Password"
+                type="password"
+                @input="$v.password.$touch()"
+                @blur="$v.password.$touch()"
+              />
+              <v-card-actions>
+                <v-btn
+                  primary
+                  large
+                  block
+                  @click="handleSubmit"
+                >
+                  Login
+                </v-btn>
+              </v-card-actions>
+            </form>
+          </v-card>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-</v-container>
 <script>
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
   export default {
+    mixins: [validationMixin],
+
+    validations: {
+      password: { required, maxLength: maxLength(10) },
+      email: { required, email },
+    },
     data () {
       return {
-        username: '',
+        email: '',
         password: '',
         submitted: false,
       }
     },
     computed: {
       ...mapState('account', ['status']),
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+      passwordErrors () {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.maxLength && errors.push('password must be at most 10 characters long')
+        !this.$v.password.required && errors.push('password is required.')
+        return errors
+      },
     },
     created () {
-      // reset login status
       this.logout()
     },
     methods: {
       ...mapActions('account', ['login', 'logout']),
       handleSubmit (e) {
+        console.log('subbmited')
         this.submitted = true
-        const { username, password } = this
-        if (username && password) {
-          this.login({ username, password })
+        const { email, password } = this
+        if (email && password) {
+          this.login({ username: email, password: password })
         }
+      },
+      clear () {
+        this.$v.$reset()
+        this.password = ''
+        this.email = ''
       },
     },
   }

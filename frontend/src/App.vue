@@ -1,7 +1,12 @@
 <template>
-  <v-app>
+   <main>
+      <transition mode="out-in">
+        <router-view></router-view>
+      </transition>
+   </main>
+  <!-- <v-app>
     <router-view />
-  </v-app>
+  </v-app> -->
 </template>
 
 <script>

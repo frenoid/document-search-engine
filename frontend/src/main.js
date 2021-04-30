@@ -19,10 +19,9 @@ Vue.config.productionTip = false
 Vue.use(VueClipboard)
 Vue.use(PortalVue)
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  render: h => h(App),
-}).$mount('#app')
+new Vue(
+  Vue.util.extend(
+     { router, store, vuetify, i18n }, // router.js, store.js (if using module or Vuex)
+     App,
+  ),
+).$mount('#app')

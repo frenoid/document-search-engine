@@ -7,6 +7,11 @@
     <dashboard-core-view />
 
     <dashboard-core-settings />
+    <v-content>
+        <transition mode="out-in">
+           <router-view></router-view>
+        </transition>
+     </v-content>
   </v-app>
 </template>
 
