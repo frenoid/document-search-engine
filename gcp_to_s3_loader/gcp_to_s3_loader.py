@@ -28,6 +28,7 @@ S3Client = NewType('S3Client', Client)
 def read_json(file_path): 
     with open(file_path, "r") as f:
         return json.load(f)
+        
 def run(config: dict) -> None:
 
     # create necessary service folder structure 
@@ -87,6 +88,7 @@ def get_gcp_client(config: dict) -> GCPClient:
 def get_s3_client(config: dict) -> S3Client:
     access_key = config['S3']['S3_ACCESS_KEY']
     secret_key = config['S3']['S3_SECRET_KEY']
+
     s3 = boto3.client(
         's3', 
         aws_access_key_id = access_key,
@@ -137,6 +139,7 @@ def download(gcp_client: GCPClient, file: dict, base_dir: str) -> None:
 
 def download_in_bulk(gcp_client: GCPClient, files: list[dict], config: dict) -> bool:
     new_file_dir = config['SERVICE']['FILE_PATH']['NEW_FILES_DIR']
+
     # Taking the resource obj and list of files to download each of them to the base dir
     if files:
         for file in files:
@@ -147,9 +150,10 @@ def download_in_bulk(gcp_client: GCPClient, files: list[dict], config: dict) -> 
         return False
 
 def staging_files(config: dict) -> None:
+    # Staging new CSV files, split individual files into small files of 10 rows each, save them into STAGED_FILES_DIR
     new_files_dir = config['SERVICE']['FILE_PATH']['NEW_FILES_DIR']
     staged_files_dir = config['SERVICE']['FILE_PATH']['STAGED_FILES_DIR']
-    # Staging new CSV files, split individual files into small files of 10 rows each, save them into STAGED_FILES_DIR
+    
     files = glob.glob(join(new_files_dir,'*.csv'))
     if not files:
         print("No new files uploaded for the past 24 hours")
@@ -173,6 +177,7 @@ def upload_to_bucket(s3_client: S3Client, config: dict) -> None:
     error_files_dir = config['SERVICE']['FILE_PATH']['ERROR_FILES_DIR']
     bucket = config['S3']['S3_BUCKET_NAME']
     folder = config['S3']['S3_UPLOAD_FOLDER_NAME']
+
     for root, dirs, files in os.walk(staged_files_dir):
         for file in files:
             new_file = join(root, file)
