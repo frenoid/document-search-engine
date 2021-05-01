@@ -1,4 +1,4 @@
-## DocumentDB to ES Loader
+## GCP TO S3 LOADER
 
 Functions to download newly created files from Google Drive, divide files into smaller files with 10 records each, and upload them onto desired folder under the target S3 bucket
 
