@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import io
 import json
@@ -5,7 +7,6 @@ import boto3
 import glob
 import pandas as pd
 
-from __future__ import annotations
 from typing import NewType
 from os.path import join, exists, splitext, basename
 from datetime import datetime, timedelta
@@ -30,7 +31,7 @@ def read_json(file_path):
 def run(config: dict) -> None:
 
     # create necessary service folder structure 
-    for folder, folder_path in config['SERVICE']['FILE']:
+    for folder, folder_path in config['SERVICE']['FILE_PATH'].items():
         if not os.path.isdir(folder_path):
             os.makedirs(folder_path)
 
@@ -44,12 +45,12 @@ def run(config: dict) -> None:
 
     # download new files if there's any and stage all new files
     status = False
-    if not newFiles:
+    if newFiles:
         status = download_in_bulk(gcp_client, newFiles, config)
         staging_files(config)
     
     # upload staged files
-    if status:
+    if False:
         upload_to_bucket(s3_client, config)
 
 def get_gcp_client(config: dict) -> GCPClient:
@@ -109,7 +110,6 @@ def get_new_files(gcp_client: GCPClient, interval: int) -> list[dict]:
             fields="nextPageToken, files(id, name, mimeType, createdTime)"
         ).execute()
         items = results.get('files', [])
-        
         if not items:
             print('No files found.')
         else: 
