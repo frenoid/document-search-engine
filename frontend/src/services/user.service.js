@@ -44,7 +44,7 @@ function register (user) {
         body: JSON.stringify(user),
     }
 
-    return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse)
+    return fetch(`${config.apiUrl}auth/register/`, requestOptions).then(handleResponse)
 }
 
 function getAll () {

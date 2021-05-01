@@ -14,6 +14,13 @@ const router = new Router({
       },
     },
     {
+      path: '/register',
+      component: () => import('@/views/dashboard/pages/Register'),
+      meta: {
+        public: true,
+      },
+    },
+    {
       path: '/',
       component: () => import('@/views/dashboard/Index'),
       children: [

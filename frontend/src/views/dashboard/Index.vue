@@ -6,12 +6,7 @@
 
     <dashboard-core-view />
 
-    <!-- <dashboard-core-settings /> -->
-    <v-content>
-        <transition mode="out-in">
-           <router-view></router-view>
-        </transition>
-     </v-content>
+    <dashboard-core-settings />
   </v-app>
 </template>
 
@@ -22,7 +17,7 @@
     components: {
       DashboardCoreAppBar: () => import('./components/core/AppBar'),
       DashboardCoreDrawer: () => import('./components/core/Drawer'),
-      // DashboardCoreSettings: () => import('./components/core/Settings'),
+      DashboardCoreSettings: () => import('./components/core/Settings'),
       DashboardCoreView: () => import('./components/core/View'),
     },
 

@@ -1,123 +1,156 @@
 <template>
-  <div>
-    <h2>Register</h2>
-    <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input
-          v-model="user.firstName"
-          v-validate="'required'"
-          type="text"
-          name="firstName"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && errors.has('firstName') }"
+  <v-container>
+    <v-row class="text-center">
+      <v-col cols="3" />
+      <v-col
+        cols="6"
+      >
+        <v-container
+          style="position: relative;top: 13%;"
+          class="text-center"
         >
-        <div
-          v-if="submitted && errors.has('firstName')"
-          class="invalid-feedback"
-        >
-          {{ errors.first('firstName') }}
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input
-          v-model="user.lastName"
-          v-validate="'required'"
-          type="text"
-          name="lastName"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && errors.has('lastName') }"
-        >
-        <div
-          v-if="submitted && errors.has('lastName')"
-          class="invalid-feedback"
-        >
-          {{ errors.first('lastName') }}
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          v-model="user.username"
-          v-validate="'required'"
-          type="text"
-          name="username"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && errors.has('username') }"
-        >
-        <div
-          v-if="submitted && errors.has('username')"
-          class="invalid-feedback"
-        >
-          {{ errors.first('username') }}
-        </div>
-      </div>
-      <div class="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          v-model="user.password"
-          v-validate="{ required: true, min: 6 }"
-          type="password"
-          name="password"
-          class="form-control"
-          :class="{ 'is-invalid': submitted && errors.has('password') }"
-        >
-        <div
-          v-if="submitted && errors.has('password')"
-          class="invalid-feedback"
-        >
-          {{ errors.first('password') }}
-        </div>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-primary"
-          :disabled="status.registering"
-        >
-          Register
-        </button>
-        <img
-          v-show="status.registering"
-          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-        >
-        <router-link
-          to="/login"
-          class="btn btn-link"
-        >
-          Cancel
-        </router-link>
-      </div>
-    </form>
-  </div>
+          <v-card flat>
+            <v-card-title
+              primary-title
+            >
+              <h4>
+                Register
+              </h4>
+            </v-card-title>
+            <form>
+              <v-text-field
+                v-model="email"
+                :error-messages="emailErrors"
+                required
+                name="email"
+                label="Email"
+                @input="$v.email.$touch()"
+                @blur="$v.email.$touch()"
+              />
+              <v-text-field
+                v-model="firstname"
+                :error-messages="emailErrors"
+                required
+                name="firstname"
+                label="Firstname"
+                @input="$v.firstname.$touch()"
+                @blur="$v.firstname.$touch()"
+              />
+              <v-text-field
+                v-model="lastname"
+                :error-messages="emailErrors"
+                required
+                name="lastname"
+                label="Lastname"
+                @input="$v.lastname.$touch()"
+                @blur="$v.lastname.$touch()"
+              />
+              <v-text-field
+                v-model="password1"
+                :error-messages="password2Errors"
+                required
+                name="password1"
+                label="Password 1"
+                type="password"
+                @input="$v.password1.$touch()"
+                @blur="$v.password1.$touch()"
+              />
+               <v-text-field
+                v-model="password2"
+                :error-messages="password2Errors"
+                required
+                name="password2"
+                label="Password 2"
+                type="password"
+                @input="$v.password2.$touch()"
+                @blur="$v.password2.$touch()"
+              />
+              <v-card-actions>
+                <v-btn
+                  primary
+                  large
+                  block
+                  @click="handleSubmit"
+                >
+                  Register
+                </v-btn>
+              </v-card-actions>
+            </form>
+          </v-card>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-
 <script>
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
   export default {
+    mixins: [validationMixin],
+
+    validations: {
+      password2: { required, maxLength: maxLength(10) },
+      password1: { required, maxLength: maxLength(10) },
+      email: { required, email },
+      lastname: { required,  maxLength: maxLength(20)},
+    },
     data () {
       return {
-        user: {
-          firstName: '',
-          lastName: '',
-          username: '',
-          password: '',
-        },
+        email: '',
+        password1: '',
+        password2: '',
+        firstname: '',
+        lastname: '',
         submitted: false,
       }
     },
     computed: {
       ...mapState('account', ['status']),
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+      password1Errors () {
+        const errors = []
+        if (!this.$v.password1.$dirty) return errors
+        !this.$v.password1.maxLength && errors.push('password must be at most 10 characters long')
+        !this.$v.password1.required && errors.push('password is required.')
+        return errors
+      },
+      password2Errors () {
+        const errors = []
+        if (!this.$v.password2.$dirty) return errors
+        !this.$v.password2.maxLength && errors.push('password must be at most 10 characters long')
+        !this.$v.password2.required && errors.push('password is required.')
+        return errors
+      },
+    },
+    created () {
+      this.logout()
     },
     methods: {
-      ...mapActions('account', ['register']),
-      handleSubmit (e) {
+     ...mapActions('account', ['logout', 'register']),
+     handleSubmit (e) {
         this.submitted = true
-        this.$validator.validate().then(valid => {
-          if (valid) {
-            this.register(this.user)
-          }
-        })
+        const { email, password2, firstname, lastname, password1 } = this
+        // if(email && password1 && password2 & lastname) {
+          
+        // }
+        this.register({
+            email, firstname, lastname, password1, password2
+          })
+      },
+      clear () {
+        this.$v.$reset()
+        this.password2 = ''
+        this.email = ''
+        this.password1 = ''
+        this.firstname = ''
+        this.lastname = ''
       },
     },
   }

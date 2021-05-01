@@ -30,7 +30,7 @@
                     class="purple-input"
                     label="User Name"
                     disabled
-                    value="Tony2021"
+                    value="tony2021"
                   />
                 </v-col>
 
@@ -39,6 +39,7 @@
                   md="6"
                 >
                   <v-text-field
+                    disabled
                     label="Email Address"
                     class="purple-input"
                   />
@@ -63,53 +64,6 @@
                     class="purple-input"
                   />
                 </v-col>
-
-                <v-col cols="12">
-                  <v-text-field
-                    label="Adress"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    label="City"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    label="Country"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    class="purple-input"
-                    label="Postal Code"
-                    type="number"
-                  />
-                </v-col>
-
-                <v-col cols="12">
-                  <v-textarea
-                    class="purple-input"
-                    label="About Me"
-                    value="update me"
-                  />
-                </v-col>
-
                 <v-col
                   cols="12"
                   class="text-right"
@@ -132,6 +86,15 @@
 
 <script>
   export default {
-    //
+     data () {
+      return {
+        user: {
+          firstName: '',
+          lastName: '',
+          email: '',
+          username: ''
+        },
+      }
+    },
   }
 </script>
