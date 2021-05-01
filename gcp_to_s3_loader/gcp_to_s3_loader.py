@@ -50,7 +50,7 @@ def run(config: dict) -> None:
         staging_files(config)
     
     # upload staged files
-    if False:
+    if status:
         upload_to_bucket(s3_client, config)
 
 def get_gcp_client(config: dict) -> GCPClient:
@@ -87,19 +87,12 @@ def get_gcp_client(config: dict) -> GCPClient:
 def get_s3_client(config: dict) -> S3Client:
     access_key = config['S3']['S3_ACCESS_KEY']
     secret_key = config['S3']['S3_SECRET_KEY']
-    try:
-        s3 = boto3.client(
-            's3', 
-            aws_access_key_id = access_key,
-            aws_secret_access_key = secret_key
-        )
-    except NoCredentialsError:
-        print("Error! Invalid Credential to s3")
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'Internal Error':
-            http_status_code = e.response['ResponseMetadata']['HTTPStatusCode']
-            error_message = e.response['Error']['Message']
-            print(f'Error! Error connecting to S3 client. Error code {http_status_code}: {error_message}')
+    s3 = boto3.client(
+        's3', 
+        aws_access_key_id = access_key,
+        aws_secret_access_key = secret_key
+    )
+    return s3
 
 def get_new_files(gcp_client: GCPClient, interval: int) -> list[dict]:
     # Taking the resource obj and return a list of the new files for the past 24 hours
@@ -122,7 +115,7 @@ def get_new_files(gcp_client: GCPClient, interval: int) -> list[dict]:
     return new_files
 
 
-def download(gcp_client: GCPClient, file: dict, base_dir: str) -> bool:
+def download(gcp_client: GCPClient, file: dict, base_dir: str) -> None:
     # Taking the resource obj and individual file info (filename, id, file type) to download to the base dir
     try:  
         filename = file['name']
@@ -136,23 +129,22 @@ def download(gcp_client: GCPClient, file: dict, base_dir: str) -> bool:
             if status:
                 print("Download %d%%. " % int(status.progress()*100))
         print(f"Success! Download {filename} Complete!")
-        return True
     except HttpError as error:
         print(f'Error! An Http error occurred: {error}')
-        return False
     except KeyError:
         print(f'Error! Incorrect or empty file input')
-        return False
 
 
-def download_in_bulk(gcp_client: GCPClient, files: list[dict], config: dict) -> None:
+def download_in_bulk(gcp_client: GCPClient, files: list[dict], config: dict) -> bool:
     new_file_dir = config['SERVICE']['FILE_PATH']['NEW_FILES_DIR']
     # Taking the resource obj and list of files to download each of them to the base dir
     if files:
         for file in files:
             download(gcp_client, file, new_file_dir)
+        return True
     else:
         print('No new files created for the past day')
+        return False
 
 def staging_files(config: dict) -> None:
     new_files_dir = config['SERVICE']['FILE_PATH']['NEW_FILES_DIR']
@@ -180,14 +172,14 @@ def upload_to_bucket(s3_client: S3Client, config: dict) -> None:
     released_files_dir = config['SERVICE']['FILE_PATH']['RELEASED_FILES_DIR']
     error_files_dir = config['SERVICE']['FILE_PATH']['ERROR_FILES_DIR']
     bucket = config['S3']['S3_BUCKET_NAME']
-
+    folder = config['S3']['S3_UPLOAD_FOLDER_NAME']
     for root, dirs, files in os.walk(staged_files_dir):
         for file in files:
             new_file = join(root, file)
             released_file = join(released_files_dir, file)
             error_file = join(error_files_dir, file)
             try:
-                s3_client.upload_file(new_file, bucket, file)
+                s3_client.upload_file(new_file, bucket, f'{folder}/{file}')
                 os.replace(new_file, released_file)
                 print(f"Success! Upload {file} to {bucket} Successful")
             except ClientError:
