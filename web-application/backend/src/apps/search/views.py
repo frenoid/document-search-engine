@@ -3,9 +3,11 @@ from rest_framework import status
 from django.views.decorators.http import require_GET
 from .services.search_service import search_documents
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @require_GET
 def search(request):
