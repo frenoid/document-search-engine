@@ -13,25 +13,14 @@
       title=""
       class="px-5 py-3"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th class="primary--text">
-              ID
-            </th>
-            <th class="primary--text">
-              Name
-            </th>
-            <th class="primary--text">
-              uploaded by
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          will add table content
-        </tbody>
-      </v-simple-table>
+      <data-table />
     </base-material-card>
   </v-container>
 </template>
+<script>
+export default {
+  components: { 
+    DataTable: () => import('../component/DataTable')
+  },
+}
+</script>

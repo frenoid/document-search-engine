@@ -35,7 +35,6 @@
             max-height="30"
           />
         </v-list-item-avatar>
-
         <v-list-item-content>
           <v-list-item-title
             class="text-h4"

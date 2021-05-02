@@ -14,6 +14,8 @@
       :headers="headers"
       :items="files"
       :search="search"
+      :loading="loadTable"
+      loading-text="Loading... Please wait"
     ></v-data-table>
   </v-card>
 </template>
@@ -25,6 +27,7 @@
     name: 'DataTable',
     data () {
       return {
+        loadTable: false,
         search: '',
         headers: [
           {
@@ -47,12 +50,20 @@
     },
     methods: {
         async fetchFiles(options){
+            this.loadTable = true
             this.files = []
             const search = this.search.trim();
             let params = { search }
             params.items_per_page = this.tableOptions.itemsPerPage;
             params.page = this.tableOptions.page;
-            this.files = await searchFiles(params) 
+            try {
+                const response = await searchFiles(params)
+            } catch (error){
+                console.log(error)
+                this.files = []
+            } finally{
+                this.loadTable = false
+            } 
         }
     },
     watch: {
