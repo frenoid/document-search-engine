@@ -29,8 +29,6 @@
               />
               <v-text-field
                 v-model="firstname"
-                :error-messages="emailErrors"
-                required
                 name="firstname"
                 label="Firstname"
                 @input="$v.firstname.$touch()"
@@ -38,7 +36,7 @@
               />
               <v-text-field
                 v-model="lastname"
-                :error-messages="emailErrors"
+                :error-messages="lastNameErrors"
                 required
                 name="lastname"
                 label="Lastname"
@@ -93,6 +91,7 @@
       password2: { required, maxLength: maxLength(10) },
       password1: { required, maxLength: maxLength(10) },
       email: { required, email },
+      firstname: { maxLength: maxLength(20)},
       lastname: { required,  maxLength: maxLength(20)},
     },
     data () {
@@ -110,8 +109,15 @@
       emailErrors () {
         const errors = []
         if (!this.$v.email.$dirty) return errors
-        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email && errors.push('Must be valid e-mail')
         !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+      lastNameErrors () {
+        const errors = []
+        if (!this.$v.lastname.$dirty) return errors
+        !this.$v.lastname && errors.push('Must be valid e-mail')
+        !this.$v.lastname.required && errors.push('E-mail is required')
         return errors
       },
       password1Errors () {
