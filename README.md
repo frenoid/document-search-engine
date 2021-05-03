@@ -1,5 +1,7 @@
 # SWE 5001 Architecting Scalable Systems - Practice Module Project
 
+![Tests](https://github.com/github/docs/actions/workflows/tests.yml/badge.svg)
+
 ## A search engine for company documentation
 
 The company has many teams writing technical documentation on Google Docs for their products and processes.
