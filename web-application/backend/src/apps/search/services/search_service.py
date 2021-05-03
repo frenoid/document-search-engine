@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from typing import Dict
 from dotenv import load_dotenv, find_dotenv
@@ -44,15 +46,16 @@ def build_response_object(es_response: Dict) -> Dict:
     return response_object
 
 
-def search_documents(search_string: str) -> Dict:
+def search_documents(search_string: str, weights: dict = {}) -> Dict:
     es_client = get_es_client()
 
     index = ES_PRODUCTION_ALIAS
+    fields_weight = build_query_with_weight(weights)
     body = {
         "query": {
             "query_string": {
                 "query": search_string,
-                "fields": ["doc.content", "doc.topic"],
+                "fields": fields_weight,
             }
         }
     }
@@ -67,3 +70,18 @@ def search_documents(search_string: str) -> Dict:
     response_object = build_response_object(es_response)
 
     return response_object
+
+def build_query_with_weight(weights: dict) -> list[str]:
+    # return with a list of str with format {field name}^{weight}
+    #default
+    if not weights:
+        fields = ["doc.content", "doc.topic"]
+        return fields
+    else:
+        fields = []
+        for field, weight in weights.items():
+            if weight > 1:
+                fields.append(f"{field}^{weight}")
+            else:
+                fields.append(f"{field}")
+        return fields
