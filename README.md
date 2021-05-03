@@ -1,6 +1,6 @@
 # SWE 5001 Architecting Scalable Systems - Practice Module Project
 
-![Tests](https://github.com/github/docs/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/frenoid/document-search-engine/actions/workflows/tests.yml/badge.svg)
 
 ## A search engine for company documentation
 
