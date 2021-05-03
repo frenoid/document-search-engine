@@ -1,58 +1,73 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="3" />
-      <v-col
-        cols="6"
+  <div>
+    <v-toolbar
+      dark
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+    >
+      <v-toolbar-title>Team 4</v-toolbar-title>
+      <v-spacer />
+      <v-btn
+        icon
+        to="register"
       >
-        <v-container
-          style="position: relative;top: 13%;"
-          class="text-center"
+        Register
+      </v-btn>
+    </v-toolbar>
+    <v-container>
+      <v-row class="text-center">
+        <v-col cols="3" />
+        <v-col
+          cols="6"
         >
-          <v-card flat>
-            <v-card-title
-              primary-title
-            >
-              <h4>
-                Login
-              </h4>
-            </v-card-title>
-            <form>
-              <v-text-field
-                v-model="email"
-                :error-messages="emailErrors"
-                required
-                name="email"
-                label="Email"
-                @input="$v.email.$touch()"
-                @blur="$v.email.$touch()"
-              />
-              <v-text-field
-                v-model="password"
-                :error-messages="passwordErrors"
-                required
-                name="password"
-                label="Password"
-                type="password"
-                @input="$v.password.$touch()"
-                @blur="$v.password.$touch()"
-              />
-              <v-card-actions>
-                <v-btn
-                  primary
-                  large
-                  block
-                  @click="handleSubmit"
-                >
+          <v-container
+            style="position: relative;top: 13%;"
+            class="text-center"
+          >
+            <v-card flat>
+              <v-card-title
+                primary-title
+              >
+                <h4>
                   Login
-                </v-btn>
-              </v-card-actions>
-            </form>
-          </v-card>
-        </v-container>
-      </v-col>
-    </v-row>
-  </v-container>
+                </h4>
+              </v-card-title>
+              <form>
+                <v-text-field
+                  v-model="email"
+                  :error-messages="emailErrors"
+                  required
+                  name="email"
+                  label="Email"
+                  @input="$v.email.$touch()"
+                  @blur="$v.email.$touch()"
+                />
+                <v-text-field
+                  v-model="password"
+                  :error-messages="passwordErrors"
+                  required
+                  name="password"
+                  label="Password"
+                  type="password"
+                  @input="$v.password.$touch()"
+                  @blur="$v.password.$touch()"
+                />
+                <v-card-actions>
+                  <v-btn
+                    primary
+                    large
+                    block
+                    @click="handleSubmit"
+                  >
+                    Login
+                  </v-btn>
+                </v-card-actions>
+              </form>
+            </v-card>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 <script>
   import { validationMixin } from 'vuelidate'
@@ -95,7 +110,6 @@
     methods: {
       ...mapActions('account', ['login', 'logout']),
       handleSubmit (e) {
-        console.log('subbmited')
         this.submitted = true
         const { email, password } = this
         if (email && password) {

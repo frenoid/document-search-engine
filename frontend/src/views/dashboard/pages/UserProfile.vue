@@ -30,7 +30,7 @@
                     class="purple-input"
                     label="User Name"
                     disabled
-                    value="tony2021"
+                    v-model="user.username"
                   />
                 </v-col>
 
@@ -42,6 +42,7 @@
                     disabled
                     label="Email Address"
                     class="purple-input"
+                    v-model="user.email"
                   />
                 </v-col>
 
@@ -52,6 +53,7 @@
                   <v-text-field
                     label="First Name"
                     class="purple-input"
+                    v-model="user.firstname"
                   />
                 </v-col>
 
@@ -62,6 +64,7 @@
                   <v-text-field
                     label="Last Name"
                     class="purple-input"
+                    v-model="user.lastname"
                   />
                 </v-col>
                 <v-col
@@ -94,6 +97,12 @@
           email: '',
           username: ''
         },
+      }
+    },
+    created() {
+      const loggedIn = localStorage.getItem('user')
+      if (loggedIn) {
+        this.user = this.$store.state.account.user.user
       }
     },
   }
