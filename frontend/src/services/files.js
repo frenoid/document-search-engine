@@ -6,7 +6,7 @@ function searchFiles (params) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(),
-        params
+        params,
     }
     return fetch(`${BASE_URL}files?search=${params.search}`, requestOptions).then(handleResponse)
 }
@@ -17,14 +17,12 @@ function handleResponse (response) {
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
-                logout()
                 location.reload(true)
             }
 
             const error = (data && data.error) || response.statusText
             return Promise.reject(error)
-        }
-        else if(response.status === 401) {
+        } else if (response.status === 401) {
             const error = (data && data.error) || response.statusText
             return Promise.reject(error)
         }

@@ -18,9 +18,9 @@
   </v-container>
 </template>
 <script>
-export default {
-  components: { 
-    DataTable: () => import('../component/DataTable')
-  },
-}
+  export default {
+    components: {
+      DataTable: () => import('../component/DataTable'),
+    },
+  }
 </script>

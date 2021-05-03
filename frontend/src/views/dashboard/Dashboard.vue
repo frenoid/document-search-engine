@@ -5,9 +5,9 @@
     tag="section"
   >
     <v-row>
-      <v-col  cols="12">
+      <v-col cols="12">
         <div>
-          <data-table/>
+          <data-table />
         </div>
       </v-col>
     </v-row>
@@ -17,8 +17,8 @@
 <script>
   export default {
     name: 'DashboardDashboard',
-    components: { 
-      DataTable: () => import('./component/DataTable')
+    components: {
+      DataTable: () => import('./component/DataTable'),
     },
     data () {
       return { }

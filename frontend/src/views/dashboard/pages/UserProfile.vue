@@ -27,10 +27,10 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.username"
                     class="purple-input"
                     label="User Name"
                     disabled
-                    v-model="user.username"
                   />
                 </v-col>
 
@@ -39,10 +39,10 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.email"
                     disabled
                     label="Email Address"
                     class="purple-input"
-                    v-model="user.email"
                   />
                 </v-col>
 
@@ -51,9 +51,9 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.firstname"
                     label="First Name"
                     class="purple-input"
-                    v-model="user.firstname"
                   />
                 </v-col>
 
@@ -62,9 +62,9 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.lastname"
                     label="Last Name"
                     class="purple-input"
-                    v-model="user.lastname"
                   />
                 </v-col>
                 <v-col
@@ -89,17 +89,17 @@
 
 <script>
   export default {
-     data () {
+    data () {
       return {
         user: {
           firstName: '',
           lastName: '',
           email: '',
-          username: ''
+          username: '',
         },
       }
     },
-    created() {
+    created () {
       const loggedIn = localStorage.getItem('user')
       if (loggedIn) {
         this.user = this.$store.state.account.user.user

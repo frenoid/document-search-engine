@@ -8,7 +8,7 @@
         single-line
         hide-details
         @change="fetchFiles"
-      ></v-text-field>
+      />
     </v-card-title>
     <v-data-table
       :headers="headers"
@@ -16,13 +16,13 @@
       :search="search"
       :loading="loadTable"
       loading-text="Loading... Please wait"
-    ></v-data-table>
+    />
   </v-card>
 </template>
 <script>
-    import {
-        searchFiles
-    } from '../../../services/files';
+  import {
+    searchFiles,
+  } from '../../../services/files'
   export default {
     name: 'DataTable',
     data () {
@@ -31,48 +31,46 @@
         search: '',
         headers: [
           {
-            text: 'Name',
+            text: 'ID',
             align: 'start',
             filterable: false,
-            value: 'name',
+            value: 'id',
           },
-          { text: 'type', value: 'Type' },
-          { text: 'Category', value: 'category' },
+          { text: 'Topic', value: 'topic' },
+          { text: 'Score', value: 'score' },
         ],
         files: [],
         tableOptions: {
-            page: 1,
-            itemsPerPage: 10,
-            toWatch: true,
+          page: 1,
+          itemsPerPage: 10,
+          toWatch: true,
         },
         serverItemsLength: undefined,
       }
     },
-    methods: {
-        async fetchFiles(options){
-            this.loadTable = true
-            this.files = []
-            const search = this.search.trim();
-            let params = { search }
-            params.items_per_page = this.tableOptions.itemsPerPage;
-            params.page = this.tableOptions.page;
-            try {
-                const response = await searchFiles(params)
-            } catch (error){
-                console.log(error)
-                this.files = []
-            } finally{
-                this.loadTable = false
-            } 
-        }
-    },
     watch: {
-    tableOptions(newVal) {
-      this.fetchFiles(newVal);
+      tableOptions (newVal) {
+        this.fetchFiles(newVal)
+      },
     },
-    created() {
-        this.fetchFiles();
+    methods: {
+      async fetchFiles (options) {
+        this.loadTable = true
+        // this.files = []
+        const search = this.search.trim()
+        const params = { search }
+        params.items_per_page = this.tableOptions.itemsPerPage
+        params.page = this.tableOptions.page
+        try {
+          const response = await searchFiles(params)
+          this.files = response.response
+        } catch (error) {
+          this.files = []
+        } finally {
+          this.loadTable = false
+          console.log(this.files)
+        }
+      },
     },
-  },
   }
 </script>
