@@ -68,7 +68,6 @@
           this.files = []
         } finally {
           this.loadTable = false
-          console.log(this.files)
         }
       },
     },
