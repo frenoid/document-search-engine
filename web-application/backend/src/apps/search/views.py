@@ -16,7 +16,7 @@ def search(request):
     if search_string:
         try:
             response = search_documents(search_string)
-            return JsonResponse(content=response, status=status.HTTP_200_OK)
+            return JsonResponse(response, status=status.HTTP_200_OK)
         except Exception:
             return JsonResponse({ "error": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:

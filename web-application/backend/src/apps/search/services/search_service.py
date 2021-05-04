@@ -10,11 +10,7 @@ ES_HOST = os.environ.get("ES_HOST")
 ES_USERNAME = os.environ.get("ES_USERNAME")
 ES_PASSWORD = os.environ.get("ES_PASSWORD")
 ES_PRODUCTION_ALIAS = os.environ.get("ES_PRODUCTION_ALIAS")
-# Elasticsearch
-ES_HOST="host"
-ES_USERNAME="username"
-ES_PASSWORD="password"
-ES_PRODUCTION_ALIAS="alias"
+
 
 def get_es_client() -> Elasticsearch:
     host = ES_HOST
