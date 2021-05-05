@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build backend image and push to ECR
+      uses: kciter/aws-ecr-action@v3
+      with:
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+        repo: dev/backend
+        region: ap-southeast-1
+        tags: latest,${{ github.sha }}
+        path: ./web-application/backend
+        dockerfile: web-application/backend/Dockerfile
+
+    - name: Build frontend image and push to ECR
+      uses: kciter/aws-ecr-action@v3
+      with:
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+        repo: dev/frontend
+        region: ap-southeast-1
+        tags: latest,${{ github.sha }}
+        path: ./web-application/frontend
+        dockerfile: web-application/frontend/Dockerfile
