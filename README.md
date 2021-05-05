@@ -14,7 +14,43 @@ For more info, see https://docs.google.com/document/d/1iPhPTKiz3b44uG7y99aJp4WtU
 
 ## Architecture
 
-![Architecture diagram](https://github.com/frenoid/document-search-engine/blob/master/architecture.png?raw=true)
+![Architecture diagram](https://github.com/frenoid/document-search-engine/blob/master/architecture.png?raw=true) **This is outdated**
+
+### Google Drive to S3 connector
+
+*./gcp_to_s3_loader*
+
+Google Drive is an example repository of company documentation. FIles uploaded to Google Drive will be made searachable in our document search service after being indexed.
+
+An asynchronous service running in EC2 looks up files uploaded to GDrive in the last 24 hours and uploads them to an AWS S3 as files of 10 records each
+
+### DocumentDB and loader
+
+*./mongodb-loader-function/*
+
+The MongoDB is our first semi-structed data sync. The DB is loaded by an event triggered AWS lambda function.
+
+Each S3 PUT / POSt to s3://nus-iss-group-3 triggers the lambda function to scan the csv file and upload the records as documents in MongoDB for further consumption
+
+User clicks and up-votes in the search service and also recorded here to improve future search results.
+
+### ElasticSearch cluster and loader
+
+*./documentdb_to_es_loader*
+
+The loader runs every 24 hours in an EC2 instance and works by reading all documents in MongoDB and loading them into ElasticSearch.
+
+Each run creates a new index in ElasticSearch.
+
+### Search service backend and frontend
+
+*./web-application*
+
+This is our user-facing component surfaces our indexed documentation.
+
+Users are given an interface to search for the documentation they want and access relevant documentation
+
+User clickthroughs are also recorded to improve the search alogrithms. Users can also up-vote relevant results and down-vote less useful results
 
 ## Our Platform
 
