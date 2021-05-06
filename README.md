@@ -70,8 +70,8 @@ terraform apply
 ```
 
 Files included:
-versions.tf: document the terraform and required service provider versions.
-variables.tf: document the necessary environment variales (e.g. key-names, iam role)
-provider.tf: document the necessary provider configuration
-main.tf: document all resources' configuration, set up based on service nature
-env_init.sh: script to execute when creating the defined EC2 instance, to ensure instances are created with necessary package installed and environment variables enabled
+* versions.tf: document the terraform and required service provider versions.
+* variables.tf: document the necessary environment variales (e.g. key-names, iam role)
+* provider.tf: document the necessary provider configuration
+* main.tf: document all resources' configuration, set up based on service nature
+* env_init.sh: script to execute when creating the defined EC2 instance, to ensure instances are created with necessary package installed and environment variables enabled
