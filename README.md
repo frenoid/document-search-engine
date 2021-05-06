@@ -49,4 +49,29 @@ The platform will record user views and behaviour on the platform and use machin
 
 ## To Run
 
-TBC
+### Setup all cloud resources with Terraform configuration
+All the cloud infrastructure included in this project are documented as Terraform configuration. This helps to improve the maintanabiltiy and extensibiltiy. Teams are allow to build, change and version the infrastructure safely and efficiently. It also makes redeployment in different environments simpler. Users are able to scale up/down the resource via configuration update and re-apply. It's also a easier way for management to have an overview on all the resources plan, monitoring the usage and make necessary adjustment at ease. 
+
+Terraform structure
+.
+└── terraform
+    ├── versions.tf
+    ├── variables.tf
+    ├── provider.tf
+    ├── main.tf
+    ├── env_init.sh
+
+How to run:
+```
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+Files included:
+versions.tf: document the terraform and required service provider versions.
+variables.tf: document the necessary environment variales (e.g. key-names, iam role)
+provider.tf: document the necessary provider configuration
+main.tf: document all resources' configuration, set up based on service nature
+env_init.sh: script to execute when creating the defined EC2 instance, to ensure instances are created with necessary package installed and environment variables enabled
