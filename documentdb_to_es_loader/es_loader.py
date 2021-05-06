@@ -2,9 +2,10 @@ import json
 import math
 import time
 import sys
+import os
 
 from datetime import datetime
-from typing import Union
+from typing import Union, List
 from collections import deque
 from elasticsearch import Elasticsearch, ConnectionError
 from elasticsearch.helpers import BulkIndexError, parallel_bulk
@@ -50,7 +51,7 @@ def get_mongo_documents_count(client: MongoClient) -> int:
 
 def get_mongo_documents(
     client: MongoClient, bulk_size: int = BULK_SIZE, skip: int = 0
-) -> list[Cursor]:
+) -> List[Cursor]:
     try:
         document_db = client["docu_search"]
         collection = document_db["documents"]
@@ -65,7 +66,7 @@ def get_mongo_documents(
 
 def compute_batch_list(
     mongo_documents_count: int, bulk_size: int = BULK_SIZE
-) -> list[int]:
+) -> List[int]:
     remaining_documents = mongo_documents_count
     batch_list = []
 
@@ -114,7 +115,7 @@ def handle_nan_value(string: Union[str, float]) -> str:
         return empty_string
 
 
-def build_es_actions(mongo_documents: list[Cursor], next_index: str) -> list[dict]:
+def build_es_actions(mongo_documents: List[Cursor], next_index: str) -> List[dict]:
     es_actions = []
     for document in mongo_documents:
         content = handle_nan_value(document["content"])
@@ -133,7 +134,7 @@ def build_es_actions(mongo_documents: list[Cursor], next_index: str) -> list[dic
     return es_actions
 
 
-def bulk_create_es_documents(client: Elasticsearch, actions: list[dict]):
+def bulk_create_es_documents(client: Elasticsearch, actions: List[dict]):
     max_number_of_attempts = 10
     for attempt in range(max_number_of_attempts):
         try:
@@ -203,8 +204,8 @@ def batch_process(config):
 
 
 def get_production_indices(
-    list_of_indices: list[str], production_index_prefix: str
-) -> list[str]:
+    list_of_indices: List[str], production_index_prefix: str
+) -> List[str]:
     production_indices = []
     for index in list_of_indices:
         if index.lower().startswith(production_index_prefix.lower()):
@@ -213,7 +214,7 @@ def get_production_indices(
     return production_indices
 
 
-def get_past_index(production_indices: list[str]) -> str:
+def get_past_index(production_indices: List[str]) -> str:
     past_index = production_indices[len(production_indices) - 1]
     return past_index
 
@@ -289,14 +290,17 @@ def handle_production_alias(
 
 
 if __name__ == "__main__":
-    config = read_json("config.json")
+    script_dir = os.path.dirname(__file__)
+    config_path = os.path.join(script_dir, "./config.json")
+    config = read_json(config_path)
+
     start_time = datetime.now()
 
     print("Start.")
     print(f"Start time: {start_time}")
     print()
 
-    batch_process(config)
+    # batch_process(config)
 
     end_time = datetime.now()
     total_run_time = end_time - start_time
