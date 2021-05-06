@@ -52,6 +52,7 @@ The platform will record user views and behaviour on the platform and use machin
 All the cloud infrastructure included in this project are documented as Terraform configuration. This helps to improve the maintanabiltiy and extensibiltiy. Teams are allow to build, change and version the infrastructure safely and efficiently. It also makes redeployment in different environments simpler. Users are able to scale up/down the resource via configuration update and re-apply. It's also a easier way for management to have an overview on all the resources plan, monitoring the usage and make necessary adjustment at ease. 
 
 Terraform structure
+```
 .
 └── terraform
     ├── versions.tf
@@ -59,7 +60,7 @@ Terraform structure
     ├── provider.tf
     ├── main.tf
     ├── env_init.sh
-
+```
 How to run:
 ```
 cd terraform
