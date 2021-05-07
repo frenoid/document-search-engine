@@ -20,9 +20,9 @@ For more info, see https://docs.google.com/document/d/1iPhPTKiz3b44uG7y99aJp4WtU
 
 *./gcp_to_s3_loader*
 
-Google Drive is an example repository of company documentation. FIles uploaded to Google Drive will be made searachable in our document search service after being indexed.
+Google Drive is an example repository of company documentation. Files uploaded to Google Drive will be made searachable in our document search service after being indexed.
 
-An asynchronous service running in EC2 looks up files uploaded to GDrive in the last 24 hours and uploads them to an AWS S3 as files of 10 records each
+An asynchronous service running in EC2 looks up files uploaded to GDrive in the last 24 hours and uploads them to an AWS S3 as files of 10 records each.
 
 ### DocumentDB and loader
 
@@ -30,7 +30,7 @@ An asynchronous service running in EC2 looks up files uploaded to GDrive in the 
 
 The MongoDB is our first semi-structed data sync. The DB is loaded by an event triggered AWS lambda function.
 
-Each S3 PUT / POSt to s3://nus-iss-group-3 triggers the lambda function to scan the csv file and upload the records as documents in MongoDB for further consumption
+Each S3 PUT / POST request to s3://nus-iss-group-3 triggers the lambda function to scan the csv file and upload the records as documents in MongoDB for further consumption.
 
 User clicks and up-votes in the search service and also recorded here to improve future search results.
 
@@ -48,14 +48,14 @@ Each run creates a new index in ElasticSearch.
 
 This is our user-facing component surfaces our indexed documentation.
 
-Users are given an interface to search for the documentation they want and access relevant documentation
+Users are given an interface to search for the documentation they want and access relevant documentation.
 
-User clickthroughs are also recorded to improve the search alogrithms. Users can also up-vote relevant results and down-vote less useful results
+User clickthroughs are also recorded to improve the search alogrithms. Users can also up-vote relevant results and down-vote less useful results.
 
 ## Our Platform
 
 ### Seed
-Need for documentation readers to find documents relevant to them. In return documentation writers find their intended audience and get feedback on how to write better documentation
+Need for documentation readers to find documents relevant to them. In return documentation writers find their intended audience and get feedback on how to write better documentation.
 
 ### Magnet
 For the publishers: modular integration with multiple document sources. Wherever you write,  you can integrate with our system (GDocs, GDrive, OnDrive, Dropbox).
@@ -65,21 +65,16 @@ For the consumers: search engine improves results the more you use it.
 For the consumers: search results are continuously improved with the internally developed feedback loop to collect and learn from users’ search history and feedback.
 
 ### Producers
-Documentation writers
+Documentation writers.
 
 
 ### Consumers
-Documentation readers
-We propose a platform to enable the following use cases
-Teams can publish documentation to a Cloud Storage
-The platform can index the text in the Cloud Storage
-The platform can make these documents easily searchable
-Teams needing the documentation can easily find the documents they want on the platform
-Document consumers can give feedback on the documentation and rank the documentation by usefulness
-The platform will improve the search algorithm to give better results based on user feedback
-The platform will record user views and behaviour on the platform and use machine learning to recommend other useful documents to each user
-
-
-## To Run
-
-TBC
+Documentation readers.
+We propose a platform to enable the following use cases:
+- Teams can publish documentation to a Cloud Storage
+- The platform can index the text in the Cloud Storage
+- The platform can make these documents easily searchable
+- Teams needing the documentation can easily find the documents they want on the platform
+- Document consumers can give feedback on the documentation and rank the documentation by usefulness
+- The platform will improve the search algorithm to give better results based on user feedback
+- The platform will record user views and behaviour on the platform and use machine learning to recommend other useful documents to each user
