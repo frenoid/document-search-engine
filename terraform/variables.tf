@@ -11,3 +11,11 @@ variable "aws_secret_key" {
     type = string
     default = "<Input your secret key here>"
 }
+variable "ec2_key_name" {
+    type = string
+    default = "nus-iss-group3"
+} 
+variable "lambda_arn_role" {
+    type = string
+    default = "MongoDBLoader"
+}

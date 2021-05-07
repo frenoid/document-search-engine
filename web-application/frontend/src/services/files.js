@@ -1,6 +1,6 @@
 
 import { authHeader } from '../helpers'
-const BASE_URL = 'http://0.0.0.0:8000/api/v1/'
+const BASE_URL = `http://${location.hostname}:8000/api/v1/`
 
 function searchFiles (params) {
     const requestOptions = {

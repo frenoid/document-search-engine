@@ -67,3 +67,7 @@ def search_documents(search_string: str) -> Dict:
     response_object = build_response_object(es_response)
 
     return response_object
+
+def search_document_by_key(id: str):
+    # todo:
+    return {}
