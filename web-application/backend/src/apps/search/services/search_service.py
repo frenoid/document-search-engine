@@ -69,5 +69,5 @@ def search_documents(search_string: str) -> Dict:
     return response_object
 
 def search_document_by_key(id: str):
-    // todo:
+    # todo:
     return {}
