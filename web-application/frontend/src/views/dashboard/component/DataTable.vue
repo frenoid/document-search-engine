@@ -10,13 +10,61 @@
         @change="fetchFiles"
       />
     </v-card-title>
+
     <v-data-table
       :headers="headers"
       :items="files"
       :search="search"
       :loading="loadTable"
       loading-text="Loading... Please wait"
-    />
+    >
+      <template #item.actions="{ item }">
+        <router-link
+          :to="{ path: `files/${item.id}` }"
+          :style="{ textDecoration: 'none', marginRight: '3px' }"
+          appendx
+        >
+          <v-tooltip top>
+            <template #activator="{ on }">
+              <v-icon
+                color="primary"
+                class="mr-3"
+                v-on="on"
+              >
+                mdi-eye
+              </v-icon>
+            </template>
+            <span>View Details</span>
+          </v-tooltip>
+        </router-link>
+        <v-tooltip top>
+          <template #activator="{ on }">
+            <v-icon
+              small
+              class="mr-3"
+              color="primary"
+              v-on="on"
+            >
+              mdi-thumb-up
+            </v-icon>
+          </template>
+          <span>Oh yes...</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template #activator="{ on }">
+            <v-icon
+              small
+              color="primary"
+              class="mr-3"
+              v-on="on"
+            >
+              mdi-thumb-down
+            </v-icon>
+          </template>
+          <span>No lah...</span>
+        </v-tooltip>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 <script>
@@ -38,6 +86,14 @@
           },
           { text: 'Topic', value: 'topic' },
           { text: 'Score', value: 'score' },
+          {
+            text: 'Actions',
+            value: 'actions',
+            displayed: true,
+            sortable: false,
+            align: 'left',
+            width: '200px',
+          },
         ],
         files: [],
         tableOptions: {

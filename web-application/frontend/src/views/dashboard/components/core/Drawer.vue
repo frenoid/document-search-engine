@@ -102,11 +102,11 @@
           title: 'user',
           to: '/pages/user',
         },
-        {
-          title: 'rtables',
-          icon: 'mdi-clipboard-outline',
-          to: '/tables/files',
-        },
+        // {
+        //   title: 'rtables',
+        //   icon: 'mdi-clipboard-outline',
+        //   to: '/tables/files',
+        // },
         {
           title: 'history',
           icon: 'mdi-format-font',

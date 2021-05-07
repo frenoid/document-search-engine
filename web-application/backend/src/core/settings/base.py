@@ -147,7 +147,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "http://0.0.0.0:8080"
+    "http://0.0.0.0:8080",
+    "http://3.1.185.26:8080"
 ]
 CORS_ALLOW_METHODS = [
     'GET',

@@ -9,9 +9,8 @@ export const userService = {
     update,
     delete: _delete,
 }
-
 const config = {
-    apiUrl: 'http://0.0.0.0:8000/api/v1/',
+    apiUrl: `http://${location.hostname}:8000/api/v1/`,
 }
 
 function login (email, password) {
