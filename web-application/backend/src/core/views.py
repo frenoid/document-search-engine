@@ -109,7 +109,7 @@ def upvote_handler(request) -> JsonResponse:
     new_upvote_count = upvote_document(topic=data["topic"],
         additional_upvotes=int(data["additional_upvotes"]))
     
-    return JsonResponse({"new_upvote_count": new_upvote_count})
+    return JsonResponse({"topic": data["topic"], "new_upvote_count": new_upvote_count})
 
 @csrf_exempt
 def downvote_handler(request) -> JsonResponse:
@@ -140,7 +140,7 @@ def downvote_handler(request) -> JsonResponse:
     new_downvote_count = downvote_document(topic=data["topic"],
         additional_downvotes=int(data["additional_downvotes"]))
     
-    return JsonResponse({"new_downvote_count": new_downvote_count})
+    return JsonResponse({"topic": data["topic"], "new_downvote_count": new_downvote_count})
 
 @csrf_exempt
 def health_check(request) -> JsonResponse:
