@@ -10,7 +10,10 @@ ES_HOST = os.environ.get("ES_HOST")
 ES_USERNAME = os.environ.get("ES_USERNAME")
 ES_PASSWORD = os.environ.get("ES_PASSWORD")
 ES_PRODUCTION_ALIAS = os.environ.get("ES_PRODUCTION_ALIAS")
-
+ES_HOST="https://search-doc-search-f3ts7puiyazfkqbev7v3lfozk4.ap-southeast-1.es.amazonaws.com"
+ES_USERNAME="django"
+ES_PASSWORD="%8UBP*rueVt2Q&"
+ES_PRODUCTION_ALIAS="doc-search-production"
 
 def get_es_client() -> Elasticsearch:
     host = ES_HOST
@@ -69,5 +72,4 @@ def search_documents(search_string: str) -> Dict:
     return response_object
 
 def search_document_by_key(id: str):
-    # todo:
     return {}

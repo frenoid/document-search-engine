@@ -26,9 +26,9 @@ def search(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @require_GET
-def retrieve_file_details(request):
-    file_id = request.GET.get("id")
-
+def retrieve_file_details(request, id):
+    file_id = self.kwargs['id']
+    print(file_id)
     if file_id:
         try:
             response = search_document_by_key(file_id)

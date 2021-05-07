@@ -11,6 +11,14 @@ function searchFiles (params) {
     return fetch(`${BASE_URL}files?search=${params.search}`, requestOptions).then(handleResponse)
 }
 
+function getFileDetails (id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    }
+    return fetch(`${BASE_URL}files/${id}/`, requestOptions).then(handleResponse)
+}
+
 function handleResponse (response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text)
@@ -30,4 +38,4 @@ function handleResponse (response) {
     })
 }
 
-export { searchFiles }
+export { searchFiles, getFileDetails }

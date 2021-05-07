@@ -48,12 +48,12 @@ const router = new Router({
         },
         {
           name: 'Files',
-          path: 'files/',
+          path: 'files',
           component: () => () => import('@/views/dashboard/tables/RegularTables'),
         },
         {
-          name: 'Files',
-          path: 'file-details/:id',
+          name: 'Document Details',
+          path: 'files/:id',
           component: () => import('@/views/dashboard/component/FileDetail'),
         },
       ],
