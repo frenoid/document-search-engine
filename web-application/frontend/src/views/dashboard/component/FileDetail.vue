@@ -47,7 +47,7 @@
           const response = await getFileDetails(this.$route.params.id)
           this.file = response.response
         } catch (error) {
-          this.files = []
+          this.file = []
         } finally {
           this.loading = false
         }
