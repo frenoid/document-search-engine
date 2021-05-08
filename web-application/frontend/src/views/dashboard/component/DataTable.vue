@@ -138,9 +138,13 @@
             additional_upvotes: 1,
           }
           const response = await upVote(data)
-          console.log(response)
+          if (response) {
+            this.loadTable = false
+          }
         } catch (error) {
-          console.log(error)
+          if (error) {
+            this.loadTable = false
+          }
         } finally {
           this.loadTable = false
         }
@@ -152,9 +156,13 @@
             ...file,
             additional_downvotes: 1,
           })
-          console.log(response)
+          if (response) {
+            this.loadTable = false
+          }
         } catch (error) {
-          console.log(error)
+          if (error) {
+            this.loadTable = false
+          }
         } finally {
           this.loadTable = false
         }
