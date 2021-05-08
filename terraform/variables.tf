@@ -19,3 +19,13 @@ variable "lambda_arn_role" {
     type = string
     default = "MongoDBLoader"
 }
+
+variable "default_ec2_ami" {
+    type = string
+    default = "ami-0fab0953c3bb514a9"
+}
+
+variable "default_ec2_instance_type" {
+    type = string
+    default = "t2.micro"
+}
