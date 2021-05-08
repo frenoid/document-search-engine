@@ -45,7 +45,7 @@
       async getFileDetails () {
         try {
           const response = await getFileDetails(this.$route.params.id)
-          this.files = response.response
+          this.file = response.response
         } catch (error) {
           this.files = []
         } finally {
