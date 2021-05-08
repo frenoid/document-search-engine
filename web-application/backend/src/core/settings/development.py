@@ -1,4 +1,7 @@
 from .base import *  # noqa: F403
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7*g1)uklkaxcagq68_@^#y3ig0w-m($eyowtw)nb1-5p8^(hao'
@@ -8,7 +11,7 @@ DEBUG = True
 
 DEV = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 WSGI_APPLICATION = 'wsgi.application'
 
