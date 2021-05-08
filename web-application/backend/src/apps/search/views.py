@@ -34,30 +34,12 @@ def retrieve_file_details(request, id):
     """
     <str:id> - document id
     """
-
+    print(request)
     try:
         response = search_document_by_key(id)
         return JsonResponse(response, status=status.HTTP_200_OK)
     except Exception:
         return JsonResponse({ "error": "Internal Server Error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# @require_POST
-# def retrieve_file_details(request, id):
-#     data=request.data
-
-#     if not (data.type or data.id):
-#         return JsonResponse({ "error": "Search criteria cannot be null"}, status=status.HTTP_400_BAD_REQUEST)
-#     #todo: to be replaced 
-#     count = 10;
-#     if data.type == "like":
-#         count =  count - 1
-#     else:
-#         count = count + 1
-#     return JsonResponse({ votes: count }, status=status.HTTP_200_OK)
-
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

@@ -11,6 +11,32 @@ function searchFiles (params) {
     return fetch(`${BASE_URL}files?search=${params.search}`, requestOptions).then(handleResponse)
 }
 
+function getFileDetails (id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    }
+    return fetch(`${BASE_URL}files/${id}`, requestOptions).then(handleResponse)
+}
+
+function upVote (data) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(data),
+    }
+    return fetch(`${BASE_URL}files/${data.id}/upvote`, requestOptions).then(handleResponse)
+}
+
+function downVote (data) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(data),
+    }
+    return fetch(`${BASE_URL}files/${data.id}/downvote`, requestOptions).then(handleResponse)
+}
+
 function handleResponse (response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text)
@@ -30,4 +56,4 @@ function handleResponse (response) {
     })
 }
 
-export { searchFiles }
+export { searchFiles, getFileDetails, upVote, downVote }

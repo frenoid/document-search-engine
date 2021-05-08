@@ -44,6 +44,7 @@
               class="mr-3"
               color="primary"
               v-on="on"
+              @click="upVoteFile(item)"
             >
               mdi-thumb-up
             </v-icon>
@@ -57,6 +58,7 @@
               color="primary"
               class="mr-3"
               v-on="on"
+              @click="downVoteFile(item)"
             >
               mdi-thumb-down
             </v-icon>
@@ -70,6 +72,8 @@
 <script>
   import {
     searchFiles,
+    upVote,
+    downVote,
   } from '../../../services/files'
   export default {
     name: 'DataTable',
@@ -122,6 +126,43 @@
           this.files = response.response
         } catch (error) {
           this.files = []
+        } finally {
+          this.loadTable = false
+        }
+      },
+      async upVoteFile (file) {
+        this.loadTable = true
+        try {
+          const data = {
+            ...file,
+            additional_upvotes: 1,
+          }
+          const response = await upVote(data)
+          if (response) {
+            this.loadTable = false
+          }
+        } catch (error) {
+          if (error) {
+            this.loadTable = false
+          }
+        } finally {
+          this.loadTable = false
+        }
+      },
+      async downVoteFile (file) {
+        this.loadTable = true
+        try {
+          const response = await downVote({
+            ...file,
+            additional_downvotes: 1,
+          })
+          if (response) {
+            this.loadTable = false
+          }
+        } catch (error) {
+          if (error) {
+            this.loadTable = false
+          }
         } finally {
           this.loadTable = false
         }

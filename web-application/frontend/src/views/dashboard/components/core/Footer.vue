@@ -33,7 +33,7 @@
             <v-icon size="18">
               mdi-heart
             </v-icon>
-            by Team 4
+            by Team 3
           </div>
         </v-col>
       </v-row>
@@ -48,15 +48,11 @@
     data: () => ({
       links: [
         {
-          href: '#',
-          text: 'Tony Aziz',
-        },
-        {
-          href: '',
+          href: 'https://taymas-technology.globalpeacelove.com/about-me',
           text: 'About Us',
         },
         {
-          href: '',
+          href: 'https://www.plum.io/hubfs/Blog%20Thumbnails/FY19_Q4_team%20pages%20blog@2x.png',
           text: 'Meeet the Team',
         },
       ],
