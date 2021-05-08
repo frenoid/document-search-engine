@@ -3,7 +3,7 @@
     <v-toolbar
       color="#4caf50"
     >
-      <v-toolbar-title>Team 4</v-toolbar-title>
+      <v-toolbar-title>3</v-toolbar-title>
       <v-spacer />
       <v-btn
         icon

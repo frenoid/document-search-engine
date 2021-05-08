@@ -11,6 +11,11 @@ ES_USERNAME = os.environ.get("ES_USERNAME")
 ES_PASSWORD = os.environ.get("ES_PASSWORD")
 ES_PRODUCTION_ALIAS = os.environ.get("ES_PRODUCTION_ALIAS")
 
+ES_HOST="https://search-doc-search-f3ts7puiyazfkqbev7v3lfozk4.ap-southeast-1.es.amazonaws.com"
+ES_USERNAME="django"
+ES_PASSWORD="%8UBP*rueVt2Q&"
+ES_PRODUCTION_ALIAS="doc-search-production"
+
 def get_es_client() -> Elasticsearch:
     host = ES_HOST
     username = ES_USERNAME
@@ -67,5 +72,38 @@ def search_documents(search_string: str) -> Dict:
 
     return response_object
 
-def search_document_by_key(id: str):
-    return {}
+
+def search_document_by_key(id: str) -> Dict:
+    es_client = get_es_client()
+
+    index = ES_PRODUCTION_ALIAS
+    body = {
+        "query": {
+            "term": {
+                "_id": id,
+            }
+        }
+    }
+
+    try:
+        es_response = es_client.search(index=index, body=body, size=10)
+        print("Success! Got search results.")
+    except Exception as e:
+        print(f"Elasticsearch Error! {e}")
+        return e
+
+    hits = es_response["hits"]["hits"]
+
+    # Raise exception if the document cannot be found
+    if len(hits) <= 0:
+        raise KeyError(f"Doc {id} not found in Elasticsearch")
+    # Raise exception duplicate documents found
+    elif len(hits) != 1:
+        raise KeyError(f"Duplicate docs with {id} found in Elasticsearch")
+    # Exactly one document found
+    else:
+        doc: dict = hits[0]["_source"]["doc"]
+
+    response_object = {"response": doc}
+
+    return response_object

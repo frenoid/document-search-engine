@@ -16,7 +16,25 @@ function getFileDetails (id) {
         method: 'GET',
         headers: authHeader(),
     }
-    return fetch(`${BASE_URL}files/${id}/`, requestOptions).then(handleResponse)
+    return fetch(`${BASE_URL}files/${id}`, requestOptions).then(handleResponse)
+}
+
+function upVote (data) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(data),
+    }
+    return fetch(`${BASE_URL}files/${data.id}/upvote`, requestOptions).then(handleResponse)
+}
+
+function downVote (data) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify(data),
+    }
+    return fetch(`${BASE_URL}files/${data.id}/downvote`, requestOptions).then(handleResponse)
 }
 
 function handleResponse (response) {
@@ -38,4 +56,4 @@ function handleResponse (response) {
     })
 }
 
-export { searchFiles, getFileDetails }
+export { searchFiles, getFileDetails, upVote, downVote }
