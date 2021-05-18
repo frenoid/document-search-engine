@@ -16,10 +16,10 @@ We propose building a search engine for the company’s documentation that learn
 For more info, see https://docs.google.com/document/d/1iPhPTKiz3b44uG7y99aJp4WtUJptwGFWjQ8SRrf9LaE/edit
 
 ## Key committers
-Lim Xing Kang Norman @frenoid
-Tay Yijun @tay-yijun
-Joseph Zhou Weixin @joswx
-Tonay Aizize Abuduaini @Aibier
+Lim Xing Kang Norman @frenoid  
+Tay Yijun @tay-yijun  
+Joseph Zhou Weixin @joswx  
+Tonay Aizize Abuduaini @Aibier  
 
 
 ## Architecture
