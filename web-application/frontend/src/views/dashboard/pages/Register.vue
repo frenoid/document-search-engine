@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-toolbar
-      dark
-      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      color="#4caf50"
     >
-      <v-toolbar-title>Team 4</v-toolbar-title>
+      <v-toolbar-title>Team 3</v-toolbar-title>
       <v-spacer />
       <v-btn
         icon
         to="login"
+        class="bth_transparent"
       >
         Login
       </v-btn>
@@ -79,7 +79,7 @@
                 />
                 <v-card-actions>
                   <v-btn
-                    primary
+                    color="#4caf50"
                     large
                     block
                     @click="handleSubmit"
@@ -176,3 +176,8 @@
     },
   }
 </script>
+<style scoped>
+.bth_transparent{
+    background-color:transparent !important
+}
+</style>>

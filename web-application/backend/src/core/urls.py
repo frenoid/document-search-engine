@@ -31,11 +31,11 @@ urlpatterns = [
     url(r'^api/v1/auth/token/', obtain_jwt_token),
     url(r'^api/v1/auth/token-refresh/', refresh_jwt_token),
     url(r'^api/v1/', include('src.apps.search.urls')),
-    url(r'^$', page_not_found, kwargs={'exception': Exception(
-        'Page not Found')}),
     url(r'^api/v1/', page_not_found, kwargs={'exception': Exception(
         'Page not Found')}),
-    url(r'^health-check', views.health_check, name="health_check")
+    url(r'^health-check', views.health_check, name="health_check"),
+    url(r'^$', page_not_found, kwargs={'exception': Exception(
+        'Page not Found')})
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
