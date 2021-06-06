@@ -35,7 +35,7 @@ Tonay Aizize Abuduaini @Aibier
 
 ## Dataflow
 
-![Data flow]https://github.com/frenoid/document-search-engine/blob/master/dataflow.png?raw=true)
+![Data flow](https://github.com/frenoid/document-search-engine/blob/master/dataflow.png?raw=true)
 
 ### Google Drive to S3 connector
 
