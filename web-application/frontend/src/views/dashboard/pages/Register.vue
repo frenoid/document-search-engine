@@ -157,12 +157,12 @@
       ...mapActions('account', ['logout', 'register']),
       handleSubmit (e) {
         this.submitted = true
-        const { email, password2, firstname, lastname, password1 } = this
+        const { email, firstname, lastname, password1 } = this
         // if(email && password1 && password2 & lastname) {
-
+        var password = password1
         // }
         this.register({
-          email, firstname, lastname, password1, password2,
+          email, firstname, lastname, password,
         })
       },
       clear () {

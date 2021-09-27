@@ -9,7 +9,6 @@ const state = user
 const actions = {
     login ({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username })
-
         userService.login(username, password)
             .then(
                 user => {

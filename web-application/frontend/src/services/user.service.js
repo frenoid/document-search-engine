@@ -13,6 +13,22 @@ const config = {
     apiUrl: `http://${location.hostname}:8000/api/v1/`,
 }
 
+function getUser () {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+    }
+
+    return fetch(`${config.apiUrl}auth/users/me/`, requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            if (user.id) {
+                localStorage.setItem('user', JSON.stringify(user))
+            }
+            return user
+        })
+}
+
 function login (email, password) {
     const requestOptions = {
         method: 'POST',
@@ -20,14 +36,14 @@ function login (email, password) {
         body: JSON.stringify({ email, password }),
     }
 
-    return fetch(`${config.apiUrl}auth/login/`, requestOptions)
+    return fetch(`${config.apiUrl}auth/token/login/`, requestOptions)
         .then(handleResponse)
-        .then(user => {
-            if (user.token) {
-                localStorage.setItem('user', JSON.stringify(user))
+        .then(token => {
+            if (token.auth_token) {
+                localStorage.setItem('token', JSON.stringify(token))
             }
-            return user
-        })
+            return token
+        }).then(() => getUser())
 }
 
 function logout () {
@@ -42,7 +58,7 @@ function register (user) {
         body: JSON.stringify(user),
     }
 
-    return fetch(`${config.apiUrl}auth/register/`, requestOptions).then(handleResponse)
+    return fetch(`${config.apiUrl}auth/users/`, requestOptions).then(handleResponse)
 }
 
 function getAll () {
