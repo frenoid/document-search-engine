@@ -14,10 +14,13 @@ import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import VueClipboard from 'vue-clipboard2'
 import PortalVue from 'portal-vue'
-
+import VueQRCodeComponent from 'vue-qrcode-component'
+import OtpInput from '@bachdgvn/vue-otp-input'
 Vue.config.productionTip = false
 Vue.use(VueClipboard)
 Vue.use(PortalVue)
+Vue.component('qr-code', VueQRCodeComponent)
+Vue.component('v-otp-input', OtpInput)
 
 new Vue(
   Vue.util.extend(

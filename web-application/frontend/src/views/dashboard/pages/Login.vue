@@ -31,7 +31,7 @@
                   Login
                 </h4>
               </v-card-title>
-              <form>
+              <form  v-if="!submitted">
                 <v-text-field
                   v-model="email"
                   :error-messages="emailErrors"
@@ -64,6 +64,34 @@
               </form>
             </v-card>
           </v-container>
+          <v-container
+            style="position: relative;top: 33%;"
+            class="text-center"
+          >
+            <div
+                align="center"
+                 v-if="submitted"
+            >
+              <v-otp-input
+                ref="otpInput"
+                input-classes="otp-input"
+                separator="-"
+                :num-inputs="6"
+                :should-auto-focus="true"
+                :is-input-num="true"
+                @on-change="handleOnChange"
+                @on-complete="handleOnComplete"
+              />
+              <v-card-actions>
+                <v-btn
+                  color="#4caf50"
+                  block
+                >
+                  Login
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -73,6 +101,7 @@
   import { validationMixin } from 'vuelidate'
   import { required, maxLength, email } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
+
   export default {
     mixins: [validationMixin],
 
@@ -108,11 +137,11 @@
       this.logout()
     },
     methods: {
-      ...mapActions('account', ['login', 'logout']),
+      ...mapActions('account', ['login', 'logout', 'verifyOTP']),
       handleSubmit (e) {
-        this.submitted = true
         const { email, password } = this
         if (email && password) {
+          this.submitted = true
           this.login({ username: email, password: password })
         }
       },
@@ -121,11 +150,34 @@
         this.password = ''
         this.email = ''
       },
+      handleOnComplete (opt) {
+        console.log('OTP completed: ', opt)
+        this.verifyOTP(opt)
+      },
+      handleOnChange (value) {
+        console.log('OTP changed: ', value)
+      },
+      handleClearInput () {
+        this.$refs.otpInput.clearInput()
+      },
     },
   }
 </script>
-<style scoped>
+<style>
   .bth_transparent{
     background-color:transparent !important
+  }
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin: 0 10px;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    textalign: "center";
+  }
+  .error {
+    border: 1px solid red !important;
   }
 </style>

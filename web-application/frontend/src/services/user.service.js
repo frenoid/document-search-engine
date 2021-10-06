@@ -1,6 +1,7 @@
 import { authHeader } from '../helpers'
 
 export const userService = {
+    verifyOTP,
     login,
     logout,
     register,
@@ -44,6 +45,23 @@ function login (email, password) {
             }
             return token
         }).then(() => getUser())
+}
+
+function verifyOTP (otp) {
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    body: JSON.stringify({ }),
+  }
+
+  return fetch(`${config.apiUrl}totp/login/${otp}/`, requestOptions)
+    .then(handleResponse)
+    .then(otp => {
+      if (otp) {
+        localStorage.setItem('token', JSON.stringify(otp))
+      }
+      return otp
+    }).then(() => getUser())
 }
 
 function logout () {

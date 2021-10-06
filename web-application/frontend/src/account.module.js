@@ -7,13 +7,32 @@ const state = user
     : { status: {}, user: null }
 
 const actions = {
+    verifyOTP ({ dispatch, commit }, otp) {
+      commit('loginRequest', { otp })
+      console.log(otp)
+      userService.verifyOTP(otp).then(
+        opt => {
+          if (opt) {
+            commit('loginSuccess', opt)
+            router.push('/')
+          } else {
+            const error = 'OTP verification failure'
+            commit('otpFailure', error)
+            dispatch('alert/error', error, { root: true })
+          }
+        },
+        error => {
+          commit('loginFailure', error)
+          dispatch('alert/error', error, { root: true })
+        })
+    },
     login ({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username })
         userService.login(username, password)
             .then(
                 user => {
                     commit('loginSuccess', user)
-                    router.push('/')
+                    router.push('/login/?opt=true')
                 },
                 error => {
                     commit('loginFailure', error)
@@ -32,7 +51,7 @@ const actions = {
             .then(
                 user => {
                     commit('registerSuccess', user)
-                    router.push('/login')
+                    router.push('/register?otp=true')
                     setTimeout(() => {
                         // display success message after route change completes
                         dispatch('alert/success', 'Registration successful', { root: true })
@@ -42,7 +61,19 @@ const actions = {
                     commit('registerFailure', error)
                     dispatch('alert/error', error, { root: true })
                 },
-            )
+            ).then(
+                user => {
+                  commit('registerSuccess', user)
+                  router.push('/login')
+                  setTimeout(() => {
+                    // display success message after route change completes
+                    dispatch('alert/success', 'Registration successful', { root: true })
+                  })
+                },
+                error => {
+                  commit('registerFailure', error)
+                  dispatch('alert/error', error, { root: true })
+                })
     },
 }
 

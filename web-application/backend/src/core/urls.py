@@ -15,7 +15,6 @@ Including another URLconf
 """
 
 from django.conf.urls import url, include
-from django.urls import path
 from django.contrib import admin
 from django.views.defaults import page_not_found
 from django.conf.urls.static import static
@@ -30,6 +29,7 @@ urlpatterns = [
     url(r'^api/v1/', include('src.apps.search.urls')),
     url(r'^api/v1/', include('src.apps.otp.urls')),
     url(r'^api/v1/', include('src.apps.document_user.urls')),
+    url(r'^api/v1/', include('src.apps.otp.urls')),
     url(r'^api/v1/', page_not_found, kwargs={'exception': Exception(
         'Page not Found')}),
     url(r'^health-check', views.health_check, name="health_check"),

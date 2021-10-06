@@ -7,7 +7,7 @@ from rest_framework_jwt.utils import jwt_decode_handler
 from django_otp.models import Device
 
 
-def jwt_otp_payload(user, device = None):
+def jwt_otp_payload(user, device=None):
     """
     Optionally include OTP device in JWT payload
     """
