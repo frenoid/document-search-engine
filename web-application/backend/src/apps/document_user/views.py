@@ -21,6 +21,7 @@ class DocUserLogoutAllView(views.APIView):
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class DocUserView(djoser_views.UserViewSet):
     """
     Uses the default Djoser view, but add the IsOtpVerified permission.
@@ -29,7 +30,8 @@ class DocUserView(djoser_views.UserViewSet):
     model = DocUser
     serializer_class = serializers.UserSerializer
     permission_classes = [permissions.IsAuthenticated, otp_permissions.IsOtpVerified]
- 
+
+
 class DocUserDeleteView(djoser_views.UserViewSet):
     """
     Uses the default Djoser view, but add the IsOtpVerified permission.

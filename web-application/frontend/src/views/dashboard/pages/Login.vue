@@ -31,7 +31,7 @@
                   Login
                 </h4>
               </v-card-title>
-              <form v-if="!submitted">
+              <form>
                 <v-text-field
                   v-model="email"
                   :error-messages="emailErrors"
@@ -63,34 +63,6 @@
                 </v-card-actions>
               </form>
             </v-card>
-          </v-container>
-          <v-container
-            style="position: relative;top: 33%;"
-            class="text-center"
-          >
-            <div
-              v-if="submitted"
-              align="center"
-            >
-              <v-otp-input
-                ref="otpInput"
-                input-classes="otp-input"
-                separator="-"
-                :num-inputs="6"
-                :should-auto-focus="true"
-                :is-input-num="true"
-                @on-change="handleOnChange"
-                @on-complete="handleOnComplete"
-              />
-              <v-card-actions>
-                <v-btn
-                  color="#4caf50"
-                  block
-                >
-                  Login
-                </v-btn>
-              </v-card-actions>
-            </div>
           </v-container>
         </v-col>
       </v-row>

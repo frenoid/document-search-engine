@@ -14,6 +14,20 @@ const router = new Router({
       },
     },
     {
+      path: '/verify-otp',
+      component: () => import('@/views/dashboard/pages/VerifyOTP'),
+      meta: {
+        public: true,
+      },
+    },
+    {
+      path: '/setup-otp',
+      component: () => import('@/views/dashboard/pages/SetupOTP'),
+      meta: {
+        public: false,
+      },
+    },
+    {
       path: '/register',
       component: () => import('@/views/dashboard/pages/Register'),
       meta: {
@@ -64,7 +78,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.public) {
     return next()
   }
-  const publicPages = ['/login', '/register']
+  const publicPages = ['/login', '/register', '/verify-otp']
   const authRequired = !publicPages.includes(to.path)
   const loggedIn = localStorage.getItem('user')
 

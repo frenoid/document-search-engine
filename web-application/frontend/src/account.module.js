@@ -31,11 +31,16 @@ const actions = {
         userService.login(username, password)
             .then(
                 user => {
-                    commit('loginSuccess', user)
-                    router.push('/login/?opt=true')
+                    if (user && !user.otp) {
+                        commit('loginSuccess', user)
+                        router.push('/setup-otp')
+                    } else {
+                        commit('verifySuccess', user)
+                        router.push('/verify-otp')
+                    }
                 },
                 error => {
-                    commit('loginFailure', error)
+                    commit('verifyFailure', error)
                     dispatch('alert/error', error, { root: true })
                 },
             )
@@ -51,29 +56,35 @@ const actions = {
             .then(
                 user => {
                     commit('registerSuccess', user)
-                    router.push('/register?otp=true')
+                    router.push('/login')
                     setTimeout(() => {
-                        // display success message after route change completes
-                        dispatch('alert/success', 'Registration successful', { root: true })
+                    // display success message after route change completes
+                    dispatch('alert/success', 'Registration successful', { root: true })
                     })
-                },
+                }).catch(
                 error => {
                     commit('registerFailure', error)
                     dispatch('alert/error', error, { root: true })
                 },
-            ).then(
+            )
+    },
+    setupOTP ({ dispatch, commit }) {
+        commit('setupOTPRequest')
+
+        userService.register(user)
+            .then(
                 user => {
-                  commit('registerSuccess', user)
-                  router.push('/login')
-                  setTimeout(() => {
-                    // display success message after route change completes
-                    dispatch('alert/success', 'Registration successful', { root: true })
-                  })
-                },
+                    commit('setupOTPSuccess', user)
+                    router.push('/login')
+                    setTimeout(() => {
+                    dispatch('alert/success', 'Setup OTP successful', { root: true })
+                    })
+                }).catch(
                 error => {
-                  commit('registerFailure', error)
-                  dispatch('alert/error', error, { root: true })
-                })
+                    commit('setupOTPFailure', error)
+                    dispatch('alert/error', error, { root: true })
+                },
+            )
     },
 }
 
@@ -101,6 +112,12 @@ const mutations = {
         state.status = {}
     },
     registerFailure (state, error) {
+        state.status = {}
+    },
+    setupOTPSuccess (state, user) {
+        state.status = {}
+    },
+    setupOTPFailure (state, error) {
         state.status = {}
     },
 }
