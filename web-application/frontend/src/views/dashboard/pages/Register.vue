@@ -92,6 +92,12 @@
           </v-container>
         </v-col>
       </v-row>
+      <v-row>
+        <qr-code
+          text="otpauth://totp/tony2%40abuduaini.com?secret=6BJJRHRKKKBHOZL6AVI25XSYAS7T47V5&algorithm=SHA1&digits=6&period=30"
+          color="#e74c3c"
+        />
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -99,9 +105,12 @@
   import { validationMixin } from 'vuelidate'
   import { required, maxLength, email } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
+  import VueQRCodeComponent from 'vue-qrcode-component'
   export default {
+    components: {
+      'qr-code': VueQRCodeComponent,
+    },
     mixins: [validationMixin],
-
     validations: {
       password2: { required, maxLength: maxLength(10) },
       password1: { required, maxLength: maxLength(10) },

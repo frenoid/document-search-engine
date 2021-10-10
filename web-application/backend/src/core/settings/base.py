@@ -166,3 +166,9 @@ CORS_ALLOW_METHODS = [
 ]
 
 AUTH_USER_MODEL = 'document_user.DocUser'
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=15),
+    'JWT_GET_USER_SECRET_KEY': 'src.apps.document_user.models.jwt_get_secret_key',
+    'JWT_PAYLOAD_HANDLER': 'src.apps.otp.utils.jwt_otp_payload',
+}

@@ -31,7 +31,7 @@
                   Login
                 </h4>
               </v-card-title>
-              <form  v-if="!submitted">
+              <form v-if="!submitted">
                 <v-text-field
                   v-model="email"
                   :error-messages="emailErrors"
@@ -69,8 +69,8 @@
             class="text-center"
           >
             <div
-                align="center"
-                 v-if="submitted"
+              v-if="submitted"
+              align="center"
             >
               <v-otp-input
                 ref="otpInput"
@@ -152,7 +152,9 @@
       },
       handleOnComplete (opt) {
         console.log('OTP completed: ', opt)
-        this.verifyOTP(opt)
+        if (opt) {
+          this.verifyOTP(opt)
+        }
       },
       handleOnChange (value) {
         console.log('OTP changed: ', value)
