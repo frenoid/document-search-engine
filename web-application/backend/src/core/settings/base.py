@@ -172,3 +172,9 @@ JWT_AUTH = {
     'JWT_GET_USER_SECRET_KEY': 'src.apps.document_user.models.jwt_get_secret_key',
     'JWT_PAYLOAD_HANDLER': 'src.apps.otp.utils.jwt_otp_payload',
 }
+
+DJOSER = {
+    'SERIALIZERS': {
+        'current_user': 'src.apps.document_user.serializer.CurrentUserSerializer',
+    },
+}

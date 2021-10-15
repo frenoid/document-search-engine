@@ -23,9 +23,10 @@
           >
             <div style="padding:35px;">
               <qr-code
-                text="otpauth://totp/tony3%40abuduaini.com?secret=K2PRRTJZLEM5GKMW6SLIYOQOUIPKIAY7&algorithm=SHA1&digits=6&period=30"
+                :text="token"
                 color="#e74c3c"
-              />
+              >
+              </qr-code>
             </div>
            <v-card-actions>
               <v-btn
@@ -50,7 +51,15 @@
     },
     data: () => ({
       show: false,
+      token: null,
     }),
+    created () {
+      const qrcode = localStorage.getItem('qrcode')
+      console.log('ssssssss', qrcode)
+      if (qrcode) {
+        this.token = qrcode
+      }
+    },
   }
 </script>
 <style scoped>

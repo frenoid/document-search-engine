@@ -41,6 +41,7 @@ def jwt_otp_payload(user, device=None):
 
     return payload
 
+
 def get_custom_jwt(user, device):
     """
     Helper to generate a JWT for a validated OTP device.
@@ -50,6 +51,7 @@ def get_custom_jwt(user, device):
 
     payload = jwt_otp_payload(user, device)
     return jwt_encode_handler(payload)
+
 
 def otp_is_verified(self, request):
     """

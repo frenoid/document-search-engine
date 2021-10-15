@@ -1,6 +1,7 @@
 import { authHeader } from '../helpers'
 
 export const userService = {
+  getQRCode,
   verifyOTP,
   login,
   logout,
@@ -23,9 +24,12 @@ function getUser () {
   return fetch(`${config.apiUrl}auth/users/me/`, requestOptions)
     .then(handleResponse)
     .then(user => {
+      user.qrcode = null
       if (user.id) {
         localStorage.setItem('user', JSON.stringify(user))
       }
+      console.log(localStorage.getItem('user'))
+      console.log('callleddddd ', user)
       return user
     })
 }
@@ -44,7 +48,7 @@ function login (email, password) {
         localStorage.setItem('token', JSON.stringify(token))
       }
       return token
-    }).then(() => getUser())
+    }).then(() => getUser()).then((user) => getQRCode(user))
 }
 
 function verifyOTP (otp) {
@@ -95,6 +99,18 @@ function getById (id) {
   }
 
   return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse)
+}
+
+function getQRCode (user) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  }
+
+  return fetch(`${config.apiUrl}totp/create/`, requestOptions).then(handleResponse).then((data) => {
+    localStorage.setItem('qrcode', JSON.stringify(data))
+    return user
+  })
 }
 
 function update (user) {

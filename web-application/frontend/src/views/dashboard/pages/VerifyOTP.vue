@@ -66,7 +66,6 @@
     methods: {
       ...mapActions('account', ['login', 'logout', 'verifyOTP']),
       handleOnComplete (opt) {
-        console.log('OTP completed: ', opt)
         if (opt) {
           this.verifyOTP(opt)
         }
