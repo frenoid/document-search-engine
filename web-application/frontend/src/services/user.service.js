@@ -21,8 +21,14 @@ function confirmOTP (user) {
     method: 'PATCH',
     headers: authHeader(),
   }
-  console.log(user)
-  return fetch(`${config.apiUrl}current-user/${user.id}`, requestOptions)
+  let loggedUser
+  if (user) {
+    loggedUser = user
+  } else {
+    loggedUser = localStorage.getItem('user')
+  }
+  console.log('loggedUser', loggedUser)
+  return fetch(`${config.apiUrl}current-user/4`, requestOptions)
   .then(handleResponse)
   .then(result => console.log(result))
 }
@@ -77,7 +83,7 @@ function verifyOTP (otp) {
         localStorage.setItem('token', JSON.stringify(otp))
       }
       return otp
-    }).then(() => getUser())
+    })
 }
 
 function logout () {

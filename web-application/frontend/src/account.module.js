@@ -86,7 +86,7 @@ const actions = {
                 },
             )
     },
-    confirmOTP ({ dispatch, commit }, id) {
+    confirmOTP ({ dispatch, commit }, user) {
         commit('confirmOTPRequest')
         userService.confirmOTP(user)
             .then(
@@ -139,6 +139,18 @@ const mutations = {
     },
     confirmOTPRequest (state, user) {
         state.status = { registering: true }
+    },
+    confirmOTPSuccess (state, user) {
+        state.status = {}
+    },
+    confirmOTPFailure (state, error) {
+        state.status = {}
+    },
+    verifySuccess (state, user) {
+        state.status = {}
+    },
+    verifyFailure (state, error) {
+        state.status = {}
     },
 }
 

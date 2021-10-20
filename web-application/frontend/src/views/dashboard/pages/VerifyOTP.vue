@@ -38,6 +38,8 @@
               <v-btn
                 color="#4caf50"
                 block
+                type="button"
+                @click="handleSubmit"
               >
                 Verify
               </v-btn>
@@ -55,19 +57,22 @@
     data () {
       return {
         submitted: false,
+        otp: '',
       }
     },
     computed: {
       ...mapState('account', ['status']),
     },
-    created () {
-      this.logout()
-    },
+
     methods: {
       ...mapActions('account', ['login', 'logout', 'verifyOTP']),
+      handleSubmit (e) {
+        e.preventDefault()
+        this.verifyOTP(this.otp)
+      },
       handleOnComplete (opt) {
         if (opt) {
-          this.verifyOTP(opt)
+          this.otp = opt
         }
       },
       handleOnChange (value) {

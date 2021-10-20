@@ -64,7 +64,7 @@
       handleSubmit (e) {
         const user = localStorage.getItem('user')
         if (user) {
-          this.confirmOTP(user.id)
+          this.confirmOTP(user)
         }
       },
     },
