@@ -23,7 +23,7 @@
           >
             <div style="padding:35px;">
               <qr-code
-                text="otpauth://totp/tony12%40abuduaini.com?secret=EZ3HBRWHOXNQEEKSSCF45RMN2QL7WFPF&algorithm=SHA1&digits=6&period=30"
+                :text="token"
                 color="#e74c3c"
               />
             </div>
