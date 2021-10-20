@@ -1,6 +1,7 @@
 import { authHeader } from '../helpers'
 
 export const userService = {
+  confirmOTP,
   getQRCode,
   verifyOTP,
   login,
@@ -13,6 +14,17 @@ export const userService = {
 }
 const config = {
   apiUrl: `http://${location.hostname}:8000/api/v1/`,
+}
+
+function confirmOTP (user) {
+  const requestOptions = {
+    method: 'PATCH',
+    headers: authHeader(),
+  }
+  console.log(user)
+  return fetch(`${config.apiUrl}current-user/${user.id}`, requestOptions)
+  .then(handleResponse)
+  .then(result => console.log(result))
 }
 
 function getUser () {

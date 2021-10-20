@@ -23,16 +23,15 @@
           >
             <div style="padding:35px;">
               <qr-code
-                :text="token"
+                text="otpauth://totp/tony12%40abuduaini.com?secret=EZ3HBRWHOXNQEEKSSCF45RMN2QL7WFPF&algorithm=SHA1&digits=6&period=30"
                 color="#e74c3c"
-              >
-              </qr-code>
+              />
             </div>
-           <v-card-actions>
+            <v-card-actions>
               <v-btn
                 color="#4caf50"
                 block
-                to="verify-otp"
+                @click="handleSubmit"
               >
                 Confirm
               </v-btn>
@@ -44,6 +43,7 @@
   </div>
 </template>
 <script>
+  import { mapActions } from 'vuex'
   import VueQRCodeComponent from 'vue-qrcode-component'
   export default {
     components: {
@@ -55,10 +55,18 @@
     }),
     created () {
       const qrcode = localStorage.getItem('qrcode')
-      console.log('ssssssss', qrcode)
       if (qrcode) {
         this.token = qrcode
       }
+    },
+    methods: {
+      ...mapActions('account', ['confirmOTP']),
+      handleSubmit (e) {
+        const user = localStorage.getItem('user')
+        if (user) {
+          this.confirmOTP(user.id)
+        }
+      },
     },
   }
 </script>

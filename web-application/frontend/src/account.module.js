@@ -86,6 +86,23 @@ const actions = {
                 },
             )
     },
+    confirmOTP ({ dispatch, commit }, id) {
+        commit('confirmOTPRequest')
+        userService.confirmOTP(user)
+            .then(
+                user => {
+                    commit('confirmOTPSuccess', user)
+                    router.push('/login')
+                    setTimeout(() => {
+                    dispatch('alert/success', 'Setup OTP successful', { root: true })
+                    })
+                }).catch(
+                error => {
+                    commit('setupOTPFailure', error)
+                    dispatch('alert/error', error, { root: true })
+                },
+            )
+    },
 }
 
 const mutations = {
@@ -119,6 +136,9 @@ const mutations = {
     },
     setupOTPFailure (state, error) {
         state.status = {}
+    },
+    confirmOTPRequest (state, user) {
+        state.status = { registering: true }
     },
 }
 
