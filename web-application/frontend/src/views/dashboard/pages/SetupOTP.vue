@@ -56,7 +56,10 @@
     created () {
       const qrcode = localStorage.getItem('qrcode')
       if (qrcode) {
-        this.token = qrcode
+        console.log(qrcode)
+        let removeFirstChar = qrcode.slice(1)
+        removeFirstChar = removeFirstChar.slice(0, removeFirstChar.length - 1)
+        this.token = removeFirstChar
       }
     },
     methods: {

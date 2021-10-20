@@ -47,12 +47,12 @@ class CurrentUserView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def patch(self, request, pk):
-        user_id = request.user.id
-        if user_id != pk:
+        user = request.user
+        if user is None:
             print(status)
             return JsonResponse(data={"message": "Does not have access"}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            object = DocUser.objects.get(pk=pk)
+            object = DocUser.objects.get(pk=user.id)
             if object is not None:
                 object.otp = True
                 serializer = serializers.UserSerializer(object, data=request.data, partial=True)
