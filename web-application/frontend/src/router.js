@@ -81,7 +81,13 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/login', '/register', '/verify-otp']
   const authRequired = !publicPages.includes(to.path)
   const loggedIn = localStorage.getItem('user')
-
+  const token = localStorage.getItem('token')
+  if (authRequired && !token) {
+    return next({
+      path: '/login',
+      query: { redirect: to.fullPath },
+    })
+  }
   if (authRequired && !loggedIn) {
     return next({
       path: '/login',

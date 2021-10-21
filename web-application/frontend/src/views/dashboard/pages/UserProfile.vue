@@ -27,7 +27,7 @@
                   md="6"
                 >
                   <v-text-field
-                    v-model="user.username"
+                    v-model="user.email"
                     class="purple-input"
                     label="User Name"
                     disabled

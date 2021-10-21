@@ -34,9 +34,19 @@
       class="ml-2"
       min-width="0"
       text
-      to="login"
+      to="pages/user"
     >
-      <!-- <v-icon>mdi-account</v-icon> -->
+      <v-icon>mdi-account</v-icon>
+      {{ name }}
+    </v-btn>
+    <div class="mx-3" />
+    <v-btn
+      class="ml-2"
+      min-width="0"
+      text
+      type="button"
+      @click="handleLogout"
+    >
       Logout
     </v-btn>
   </v-app-bar>
@@ -47,37 +57,10 @@
   // import { VHover, VListItem } from 'vuetify/lib'
 
   // Utilities
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
 
   export default {
     name: 'DashboardCoreAppBar',
-
-    // components: {
-    //   AppBarItem: {
-    //     render (h) {
-    //       return h(VHover, {
-    //         scopedSlots: {
-    //           default: ({ hover }) => {
-    //             return h(VListItem, {
-    //               attrs: this.$attrs,
-    //               class: {
-    //                 'black--text': !hover,
-    //                 'white--text secondary elevation-12': hover,
-    //               },
-    //               props: {
-    //                 activeClass: '',
-    //                 dark: hover,
-    //                 link: true,
-    //                 ...this.$attrs,
-    //               },
-    //             }, this.$slots.default)
-    //           },
-    //         },
-    //       })
-    //     },
-    //   },
-    // },
-
     props: {
       value: {
         type: Boolean,
@@ -87,15 +70,21 @@
 
     data: () => ({
       notifications: [],
+      name: 'Tony Aizize',
     }),
     computed: {
       ...mapState(['drawer']),
     },
-
     methods: {
+      ...mapActions('account', ['logout']),
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
       }),
+      handleLogout (e) {
+        e.preventDefault()
+        console.log('logout clicked')
+        this.logout()
+      },
     },
   }
 </script>

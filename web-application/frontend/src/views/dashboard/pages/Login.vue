@@ -106,7 +106,6 @@
       },
     },
     created () {
-      this.logout()
     },
     methods: {
       ...mapActions('account', ['login', 'logout', 'verifyOTP']),

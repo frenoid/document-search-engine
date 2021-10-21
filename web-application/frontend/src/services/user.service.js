@@ -80,6 +80,7 @@ function verifyOTP (otp) {
     .then(handleResponse)
     .then(otp => {
       if (otp) {
+        console.log('OTP response', otp)
         localStorage.setItem('token', JSON.stringify(otp))
       }
       return otp
@@ -88,7 +89,10 @@ function verifyOTP (otp) {
 
 function logout () {
   // remove user from local storage to log user out
+  console.log('loccccc')
   localStorage.removeItem('user')
+  localStorage.removeItem('token')
+  localStorage.removeItem('access_token')
 }
 
 function register (user) {
