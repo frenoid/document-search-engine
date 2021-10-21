@@ -15,10 +15,8 @@ Including another URLconf
 """
 
 from django.conf.urls import url, include
-from django.urls import path
 from django.contrib import admin
 from django.views.defaults import page_not_found
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
@@ -26,11 +24,12 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/auth/', include('rest_auth.urls')),
-    url(r'^api/v1/auth/register/', include('rest_auth.registration.urls')),
-    url(r'^api/v1/auth/token/', obtain_jwt_token),
-    url(r'^api/v1/auth/token-refresh/', refresh_jwt_token),
+    url(r'^api/v1/auth/', include('djoser.urls')),
+    url(r'^api/v1/auth/', include('djoser.urls.authtoken')),
     url(r'^api/v1/', include('src.apps.search.urls')),
+    url(r'^api/v1/', include('src.apps.otp.urls')),
+    url(r'^api/v1/', include('src.apps.document_user.urls')),
+    url(r'^api/v1/', include('src.apps.otp.urls')),
     url(r'^api/v1/', page_not_found, kwargs={'exception': Exception(
         'Page not Found')}),
     url(r'^health-check', views.health_check, name="health_check"),
@@ -45,3 +44,4 @@ urlpatterns += static(
     settings.STATIC_URL,
     document_root=settings.STATIC_ROOT
 )
+

@@ -43,6 +43,7 @@
                 />
                 <v-text-field
                   v-model="firstname"
+                  :error-messages="firstNameErrors"
                   name="firstname"
                   label="Firstname"
                   @input="$v.firstname.$touch()"
@@ -59,7 +60,7 @@
                 />
                 <v-text-field
                   v-model="password1"
-                  :error-messages="password2Errors"
+                  :error-messages="password1Errors"
                   required
                   name="password1"
                   label="Password 1"
@@ -79,6 +80,7 @@
                 />
                 <v-card-actions>
                   <v-btn
+                    :disabled="shouldDisableRegisterButton"
                     color="#4caf50"
                     large
                     block
@@ -96,17 +98,25 @@
   </div>
 </template>
 <script>
+  import { containsUppercase, containsLowercase, containsNumber, containsSpecial } from '../../../helpers'
   import { validationMixin } from 'vuelidate'
-  import { required, maxLength, email } from 'vuelidate/lib/validators'
+  import { required, maxLength, minLength, sameAs, email } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
   export default {
     mixins: [validationMixin],
-
     validations: {
-      password2: { required, maxLength: maxLength(10) },
-      password1: { required, maxLength: maxLength(10) },
+      password1: {
+        required,
+        maxLength: maxLength(18),
+        minLength: minLength(10),
+        containsUppercase,
+        containsLowercase,
+        containsNumber,
+        containsSpecial,
+      },
+      password2: { required, sameAsPassword: sameAs('password1') },
       email: { required, email },
-      firstname: { maxLength: maxLength(20) },
+      firstname: { required, maxLength: maxLength(20) },
       lastname: { required, maxLength: maxLength(20) },
     },
     data () {
@@ -122,32 +132,74 @@
     computed: {
       ...mapState('account', ['status']),
       emailErrors () {
+        if (this.email === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.email.$dirty) return errors
-        !this.$v.email && errors.push('Must be valid e-mail')
+        !this.$v.email.email && errors.push('Must be valid e-mail')
         !this.$v.email.required && errors.push('E-mail is required')
         return errors
       },
-      lastNameErrors () {
+      firstNameErrors () {
+        if (this.firstname === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.lastname.$dirty) return errors
-        !this.$v.lastname && errors.push('Must be valid e-mail')
-        !this.$v.lastname.required && errors.push('E-mail is required')
+        !this.$v.firstname.required && errors.push('First name is required')
+        !this.$v.firstname.maxLength && errors.push('First name must be at most 20 characters long')
+        return errors
+      },
+      lastNameErrors () {
+        if (this.lastname === '') {
+          return []
+        }
+        const errors = []
+        if (!this.$v.lastname.$dirty) return errors
+        !this.$v.lastname.required && errors.push('Last name is required')
+        !this.$v.lastname.maxLength && errors.push('Last name must be at most 20 characters long')
         return errors
       },
       password1Errors () {
+        if (this.password1 === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.password1.$dirty) return errors
-        !this.$v.password1.maxLength && errors.push('password must be at most 10 characters long')
-        !this.$v.password1.required && errors.push('password is required.')
+        !this.$v.password1.maxLength && errors.push('Password must be at most 18 characters long')
+        !this.$v.password1.minLength && errors.push('Password must be at least 10 characters long')
+        !this.$v.password1.containsUppercase && errors.push('Password should include at least one upper case character')
+        !this.$v.password1.containsLowercase && errors.push('Password should include at least one lower case character')
+        !this.$v.password1.containsNumber && errors.push('Password should include at least one number')
+        !this.$v.password1.containsSpecial && errors.push('Password should include at least one special character')
+        !this.$v.password1.required && errors.push('Password is required')
         return errors
       },
       password2Errors () {
+        if (this.password2 === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.password2.$dirty) return errors
-        !this.$v.password2.maxLength && errors.push('password must be at most 10 characters long')
-        !this.$v.password2.required && errors.push('password is required.')
+        !this.$v.password2.sameAsPassword && errors.push('Passwords must be identical')
+        !this.$v.password2.required && errors.push('Password is required')
         return errors
+      },
+      hasErrors () {
+        return [...this.emailErrors, ...this.lastNameErrors, ...this.password1Errors, ...this.password2Errors].length !== 0
+      },
+      hasBlanks () {
+        return (
+          this.email === '' ||
+          this.password1 === '' ||
+          this.password2 === '' ||
+          this.firstname === '' ||
+          this.lastname === ''
+        )
+      },
+      shouldDisableRegisterButton () {
+        return this.hasErrors || this.hasBlanks
       },
     },
     created () {
@@ -157,12 +209,12 @@
       ...mapActions('account', ['logout', 'register']),
       handleSubmit (e) {
         this.submitted = true
-        const { email, password2, firstname, lastname, password1 } = this
+        const { email, firstname, lastname, password1 } = this
         // if(email && password1 && password2 & lastname) {
-
+        var password = password1
         // }
         this.register({
-          email, firstname, lastname, password1, password2,
+          email, firstname, lastname, password,
         })
       },
       clear () {

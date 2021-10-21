@@ -36,14 +36,14 @@
 
           <v-item-group v-model="color">
             <v-item
-              v-for="color in colors"
-              :key="color"
-              :value="color"
+              v-for="cal in colors"
+              :key="cal"
+              :value="cal"
             >
-              <template v-slot="{ active, toggle }">
+              <template #default="{ active, toggle }">
                 <v-avatar
                   :class="active && 'v-settings__item--active'"
-                  :color="color"
+                  :color="cal"
                   class="v-settings__item"
                   size="25"
                   @click="toggle"
@@ -105,19 +105,19 @@
             class="d-flex justify-space-between mb-3"
           >
             <v-item
-              v-for="image in images"
-              :key="image"
-              :value="image"
+              v-for="photo in images"
+              :key="photo"
+              :value="photo"
               class="mx-1"
             >
-              <template v-slot="{ active, toggle }">
+              <template #default="{ active, toggle }">
                 <v-sheet
                   :class="active && 'v-settings__item--active'"
                   class="d-inline-block v-settings__item"
                   @click="toggle"
                 >
                   <v-img
-                    :src="image"
+                    :src="photo"
                     height="100"
                     width="50"
                   />

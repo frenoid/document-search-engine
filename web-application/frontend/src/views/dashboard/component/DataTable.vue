@@ -18,7 +18,7 @@
       :loading="loadTable"
       loading-text="Loading... Please wait"
     >
-      <template #item.actions="{ item }">
+      <template #[`item.actions`]="{ item }">
         <router-link
           :to="{ path: `files/${item.id}` }"
           :style="{ textDecoration: 'none', marginRight: '3px' }"

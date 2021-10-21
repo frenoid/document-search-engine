@@ -14,10 +14,11 @@ import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import VueClipboard from 'vue-clipboard2'
 import PortalVue from 'portal-vue'
-
+import OtpInput from '@bachdgvn/vue-otp-input'
 Vue.config.productionTip = false
 Vue.use(VueClipboard)
 Vue.use(PortalVue)
+Vue.component('VOtpInput', OtpInput)
 
 new Vue(
   Vue.util.extend(

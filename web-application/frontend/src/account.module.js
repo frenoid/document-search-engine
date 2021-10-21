@@ -7,24 +7,48 @@ const state = user
     : { status: {}, user: null }
 
 const actions = {
+    verifyOTP ({ dispatch, commit }, otp) {
+      commit('loginRequest', { otp })
+      console.log(otp)
+      userService.verifyOTP(otp).then(
+        opt => {
+          if (opt) {
+            commit('loginSuccess', opt)
+            router.push('/')
+          } else {
+            const error = 'OTP verification failure'
+            commit('otpFailure', error)
+            dispatch('alert/error', error, { root: true })
+          }
+        },
+        error => {
+          commit('loginFailure', error)
+          dispatch('alert/error', error, { root: true })
+        })
+    },
     login ({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username })
-
         userService.login(username, password)
             .then(
                 user => {
-                    commit('loginSuccess', user)
-                    router.push('/')
+                    if (user && !user.otp) {
+                        commit('loginSuccess', user)
+                        router.push('/setup-otp')
+                    } else {
+                        commit('verifySuccess', user)
+                        router.push('/verify-otp')
+                    }
                 },
                 error => {
-                    commit('loginFailure', error)
+                    commit('verifyFailure', error)
                     dispatch('alert/error', error, { root: true })
                 },
             )
     },
     logout ({ commit }) {
-        userService.logout()
         commit('logout')
+        userService.logout()
+        router.push('/login')
     },
     register ({ dispatch, commit }, user) {
         commit('registerRequest', user)
@@ -35,12 +59,47 @@ const actions = {
                     commit('registerSuccess', user)
                     router.push('/login')
                     setTimeout(() => {
-                        // display success message after route change completes
-                        dispatch('alert/success', 'Registration successful', { root: true })
+                    // display success message after route change completes
+                    dispatch('alert/success', 'Registration successful', { root: true })
                     })
-                },
+                }).catch(
                 error => {
                     commit('registerFailure', error)
+                    dispatch('alert/error', error, { root: true })
+                },
+            )
+    },
+    setupOTP ({ dispatch, commit }) {
+        commit('setupOTPRequest')
+
+        userService.register(user)
+            .then(
+                user => {
+                    commit('setupOTPSuccess', user)
+                    router.push('/login')
+                    setTimeout(() => {
+                    dispatch('alert/success', 'Setup OTP successful', { root: true })
+                    })
+                }).catch(
+                error => {
+                    commit('setupOTPFailure', error)
+                    dispatch('alert/error', error, { root: true })
+                },
+            )
+    },
+    confirmOTP ({ dispatch, commit }, user) {
+        commit('confirmOTPRequest')
+        userService.confirmOTP(user)
+            .then(
+                user => {
+                    commit('confirmOTPSuccess', user)
+                    router.push('/login')
+                    setTimeout(() => {
+                    dispatch('alert/success', 'Setup OTP successful', { root: true })
+                    })
+                }).catch(
+                error => {
+                    commit('setupOTPFailure', error)
                     dispatch('alert/error', error, { root: true })
                 },
             )
@@ -71,6 +130,27 @@ const mutations = {
         state.status = {}
     },
     registerFailure (state, error) {
+        state.status = {}
+    },
+    setupOTPSuccess (state, user) {
+        state.status = {}
+    },
+    setupOTPFailure (state, error) {
+        state.status = {}
+    },
+    confirmOTPRequest (state, user) {
+        state.status = { registering: true }
+    },
+    confirmOTPSuccess (state, user) {
+        state.status = {}
+    },
+    confirmOTPFailure (state, error) {
+        state.status = {}
+    },
+    verifySuccess (state, user) {
+        state.status = {}
+    },
+    verifyFailure (state, error) {
         state.status = {}
     },
 }

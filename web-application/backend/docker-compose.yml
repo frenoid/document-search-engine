@@ -19,8 +19,8 @@ services: # the different images that will be running as containers
       - ${APP_PORT} # retrieved from the .env file
     restart: "on-failure"
     depends_on: # cannot start if db service is not up and running
-      - db
-  db: # service name
+      - localhost
+  localhost: # service name
     image: postgres
     ports:
     - "5432:5432"

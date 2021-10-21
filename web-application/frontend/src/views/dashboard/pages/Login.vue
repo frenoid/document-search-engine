@@ -53,6 +53,7 @@
                 />
                 <v-card-actions>
                   <v-btn
+                  :disabled="shouldDisableLoginButton"
                     color="#4caf50"
                     large
                     block
@@ -71,14 +72,15 @@
 </template>
 <script>
   import { validationMixin } from 'vuelidate'
-  import { required, maxLength, email } from 'vuelidate/lib/validators'
+  import { required } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
+
   export default {
     mixins: [validationMixin],
 
     validations: {
-      password: { required, maxLength: maxLength(10) },
-      email: { required, email },
+      password: { required },
+      email: { required },
     },
     data () {
       return {
@@ -90,29 +92,41 @@
     computed: {
       ...mapState('account', ['status']),
       emailErrors () {
+        if (this.email === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.email.$dirty) return errors
-        !this.$v.email.email && errors.push('Must be valid e-mail')
         !this.$v.email.required && errors.push('E-mail is required')
         return errors
       },
       passwordErrors () {
+        if (this.password === '') {
+          return []
+        }
         const errors = []
         if (!this.$v.password.$dirty) return errors
-        !this.$v.password.maxLength && errors.push('password must be at most 10 characters long')
-        !this.$v.password.required && errors.push('password is required.')
+        !this.$v.password.required && errors.push('Password is required.')
         return errors
+      },
+      hasErrors () {
+        return [...this.emailErrors, ...this.passwordErrors].length !== 0
+      },
+      hasBlanks () {
+        return this.email === '' || this.password === ''
+      },
+      shouldDisableLoginButton () {
+        return this.hasErrors || this.hasBlanks
       },
     },
     created () {
-      this.logout()
     },
     methods: {
-      ...mapActions('account', ['login', 'logout']),
+      ...mapActions('account', ['login', 'logout', 'verifyOTP']),
       handleSubmit (e) {
-        this.submitted = true
         const { email, password } = this
         if (email && password) {
+          this.submitted = true
           this.login({ username: email, password: password })
         }
       },
@@ -121,11 +135,36 @@
         this.password = ''
         this.email = ''
       },
+      handleOnComplete (opt) {
+        console.log('OTP completed: ', opt)
+        if (opt) {
+          this.verifyOTP(opt)
+        }
+      },
+      handleOnChange (value) {
+        console.log('OTP changed: ', value)
+      },
+      handleClearInput () {
+        this.$refs.otpInput.clearInput()
+      },
     },
   }
 </script>
-<style scoped>
+<style>
   .bth_transparent{
     background-color:transparent !important
+  }
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin: 0 10px;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    textalign: "center";
+  }
+  .error {
+    border: 1px solid red !important;
   }
 </style>

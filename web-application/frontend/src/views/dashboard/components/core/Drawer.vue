@@ -11,7 +11,7 @@
     width="260"
     v-bind="$attrs"
   >
-    <template v-slot:img="props">
+    <template #img="props">
       <v-img
         :gradient="`to bottom, ${barColor}`"
         v-bind="props"
