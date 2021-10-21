@@ -28,7 +28,11 @@ function confirmOTP (user) {
     loggedUser = localStorage.getItem('user')
   }
   console.log('loggedUser', loggedUser)
-  return fetch(`${config.apiUrl}current-user/4`, requestOptions)
+  let id = 1
+  if (loggedUser && loggedUser.id) {
+    id = loggedUser.id
+  }
+  return fetch(`${config.apiUrl}current-user/${id}`, requestOptions)
   .then(handleResponse)
   .then(result => console.log(result))
 }
